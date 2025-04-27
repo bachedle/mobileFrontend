@@ -1,43 +1,64 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:padding="8dp"
-    android:background="@android:color/darker_gray"
-    android:layout_marginBottom="8dp">
+    android:background="@android:color/transparent">
 
-    <ImageView
-        android:id="@+id/imgCard"
-        android:layout_width="60dp"
-        android:layout_height="90dp"
-        android:src="@drawable/sample_card"/>
-
+    <!-- Card background -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="85dp"
-        android:layout_marginStart="8dp"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_card_white"
+        android:padding="12dp"
+        android:elevation="4dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/tvCardName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Greninja EX"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+        <!-- Card Image -->
+        <ImageView
+            android:id="@+id/imgCard"
+            android:layout_width="80dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sample_card" />
 
-        <TextView
-            android:id="@+id/tvCardSet"
-            android:layout_width="wrap_content"
+        <!-- Text Section -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Twilight Masquerade"
-            android:textSize="12sp" />
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvCardDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Special Illustration Rare\n214/167"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvCardName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Greninja EX"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tvCardSet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Twilight Masquerade"
+                android:textSize="14sp"
+                android:textColor="#555555"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/tvCardDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Special Illustration Rare\n214/167"
+                android:textSize="14sp"
+                android:textColor="#777777"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
     </LinearLayout>
-</LinearLayout>
+
+</FrameLayout>
