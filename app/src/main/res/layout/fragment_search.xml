@@ -5,10 +5,64 @@
     android:layout_height="match_parent"
     tools:context=".Search">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Search Header -->
     <TextView
+        android:id="@+id/tvSearchHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:background="#FFFFFF" />
+
+    <!-- Search Bar with Camera Icon -->
+
+    <!-- RecyclerView for Card List -->
+    <LinearLayout
+        android:id="@+id/searchBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="#E0E0E0"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="Scan with Camera"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="Search for Cards"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="12dp"
+            android:contentDescription="Search"
+            android:src="@android:drawable/ic_menu_search" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCardList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="108dp"
+        android:padding="4dp" />
 
 </FrameLayout>

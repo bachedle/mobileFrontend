@@ -28,8 +28,12 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(User())
                     true
                 }
-                R.id.item_none -> {
+                R.id.nav_search -> {
                     replaceFragment(Search())
+                    true
+                }
+                R.id.nav_simulator -> {
+                    replaceFragment(Simulator())
                     true
                 }
                 else -> false
