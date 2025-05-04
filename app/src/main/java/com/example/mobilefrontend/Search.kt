@@ -1,8 +1,6 @@
 package com.example.mobilefrontend
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,32 +24,48 @@ class Search : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
+        // Initialize RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvCardList)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = AdapterClass(dataList)
+        adapter = AdapterClass(dataList) { selectedCard ->
+            // Navigate to CardDetails fragment when a card is clicked
+            val cardDetailsFragment = CardDetails.newInstance(
+                selectedCard.dataImage,
+                selectedCard.dataCardName,
+                selectedCard.dataCardSet,
+                selectedCard.dataCardRarity,
+                selectedCard.dataCardCode
+            )
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, cardDetailsFragment)
+                .addToBackStack(null)
+                .commit()
+        }
         recyclerView.adapter = adapter
 
+        // Load sample data simulating backend response
         loadSampleData()
 
+        // Search functionality
         val searchEditText = view.findViewById<EditText>(R.id.etSearch)
+        val searchButton = view.findViewById<ImageView>(R.id.ivSearch)
+
+        searchButton.setOnClickListener {
+            val query = searchEditText.text.toString().trim()
+            filterResults(query)
+        }
+
+        // Camera scan placeholder (simulate scanning a specific card)
         val cameraButton = view.findViewById<ImageView>(R.id.ivCamera)
-
-        // Real-time filtering
-        searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filterResults(s.toString())
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
         cameraButton.setOnClickListener {
-            searchEditText.setText("Meowscarada")
+            // Simulate a scan result (e.g., looking for "Meowscarada")
+            filterResults("Meowscarada")
         }
 
         return view
     }
 
+    // Function to load sample data (simulating backend data)
     private fun loadSampleData() {
         originalDataList.clear()
         originalDataList.add(DataClass(R.drawable.sample_card, "Meowscarada EX", "151", "Ultra Rare", "151-193"))
@@ -79,10 +93,11 @@ class Search : Fragment() {
     private fun filterResults(query: String) {
         dataList.clear()
         if (query.isNotEmpty()) {
-            val filtered = originalDataList.filter {
-                it.dataCardName.contains(query, ignoreCase = true)
+            for (item in originalDataList) {
+                if (item.dataCardName.contains(query, ignoreCase = true)) {
+                    dataList.add(item)
+                }
             }
-            dataList.addAll(filtered)
         }
         adapter.notifyDataSetChanged()
     }

@@ -35,8 +35,21 @@ class Home : Fragment() {
         dataList = ArrayList()
         getData()
 
-        // Set adapter
-        recyclerView.adapter = AdapterClass(dataList)
+        // Set adapter with click handler
+        recyclerView.adapter = AdapterClass(dataList) { selectedCard ->
+            // Navigate to CardDetails fragment using fragment_container
+            val cardDetailsFragment = CardDetails.newInstance(
+                selectedCard.dataImage,
+                selectedCard.dataCardName,
+                selectedCard.dataCardSet,
+                selectedCard.dataCardRarity,
+                selectedCard.dataCardCode
+            )
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, cardDetailsFragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun getData() {

@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilefrontend.R
 
-class AdapterClass(private val dataList: ArrayList<DataClass>): RecyclerView.Adapter<AdapterClass.ViewHolderClass>() {
-
-
+class AdapterClass(
+    private val dataList: ArrayList<DataClass>,
+    private val onItemClick: (DataClass) -> Unit
+) : RecyclerView.Adapter<AdapterClass.ViewHolderClass>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
@@ -24,18 +25,21 @@ class AdapterClass(private val dataList: ArrayList<DataClass>): RecyclerView.Ada
         holder.rvCardSet.text = currentItem.dataCardSet
         holder.rvCardRarity.text = currentItem.dataCardRarity
         holder.rvCardCode.text = currentItem.dataCardCode
+
+        holder.itemView.setOnClickListener {
+            onItemClick(currentItem)
+        }
     }
 
     override fun getItemCount(): Int {
         return dataList.size
     }
 
-    class ViewHolderClass(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val rvImage:ImageView = itemView.findViewById(R.id.imgCard)
-
-        val rvCardName:TextView = itemView.findViewById(R.id.tvCardName)
-        val rvCardSet:TextView = itemView.findViewById(R.id.tvCardSet)
-        val rvCardRarity:TextView = itemView.findViewById(R.id.tvCardRarity)
-        val rvCardCode:TextView = itemView.findViewById(R.id.tvCardCode)
+    class ViewHolderClass(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val rvImage: ImageView = itemView.findViewById(R.id.imgCard)
+        val rvCardName: TextView = itemView.findViewById(R.id.tvCardName)
+        val rvCardSet: TextView = itemView.findViewById(R.id.tvCardSet)
+        val rvCardRarity: TextView = itemView.findViewById(R.id.tvCardRarity)
+        val rvCardCode: TextView = itemView.findViewById(R.id.tvCardCode)
     }
 }
