@@ -1,5 +1,6 @@
 package com.example.mobilefrontend
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,13 +12,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPref = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
+        val isAuthenticated = sharedPref.getBoolean("isAuthenticated", false)
+
+        if (!isAuthenticated) {
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
+            finish() // Don't load MainActivity until authenticated
+            return
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set the initial fragment
+        // Load the initial fragment and setup bottom navigation
         replaceFragment(Home())
-
-        // Handle bottom navigation item selection
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
