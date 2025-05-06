@@ -41,8 +41,7 @@
             android:layout_height="301dp"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/sample_card" />
+            android:scaleType="fitCenter" />
 
         <!-- Add to Collection Button -->
         <Button

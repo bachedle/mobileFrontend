@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilefrontend.itemCard.AdapterClass
 import com.example.mobilefrontend.itemCard.DataClass
-import com.example.mobilefrontend.R
 
 class Collection : Fragment() {
 
@@ -26,12 +25,12 @@ class Collection : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        // Sample data
+        // Sample card data using image URLs
         cardList = ArrayList()
         repeat(8) {
             cardList.add(
                 DataClass(
-                    R.drawable.sample_card,
+                    "https://images.squarespace-cdn.com/content/v1/5cf4cfa4382ac0000123aa1b/1686247761991-VBAA2APE3IMJUAPZI9Y4/sv2_en_164.png?format=300w", // Replace with real image URL
                     "Meowscarada EX",
                     "Paldea Evolved",
                     "Special Illustration Rare",
@@ -41,7 +40,6 @@ class Collection : Fragment() {
         }
 
         adapter = AdapterClass(cardList) { selectedCard ->
-            // Navigate to CardDetails fragment when a card is clicked
             val cardDetailsFragment = CardDetails.newInstance(
                 selectedCard.dataImage,
                 selectedCard.dataCardName,

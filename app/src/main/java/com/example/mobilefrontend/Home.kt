@@ -55,9 +55,9 @@ class Home : Fragment() {
     private fun getData() {
         // Sample data (replace with your actual data source, e.g., database or API)
         val imageList = arrayOf(
-            R.drawable.sample_card,
-            R.drawable.sample_card,
-            R.drawable.sample_card
+            "https://images.squarespace-cdn.com/content/v1/5cf4cfa4382ac0000123aa1b/1686248179919-BL2CZ95C9TV1DO51OZJT/sv2_en_192.png?format=300w",
+            "https://images.squarespace-cdn.com/content/v1/5cf4cfa4382ac0000123aa1b/1686248179919-BL2CZ95C9TV1DO51OZJT/sv2_en_192.png?format=300w",
+            "https://images.squarespace-cdn.com/content/v1/5cf4cfa4382ac0000123aa1b/1686248179919-BL2CZ95C9TV1DO51OZJT/sv2_en_192.png?format=300w"
         )
         val cardNameList = arrayOf(
             "Card One",
