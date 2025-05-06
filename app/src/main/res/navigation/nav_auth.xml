@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_auth"
     app:startDestination="@id/Login">
 
     <fragment
         android:id="@+id/Login"
-        android:name="com.example.mobilefrontend.ui.auth.Login"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        android:name="com.example.mobilefrontend.Login"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_signup"
+            app:destination="@id/Signup" />
+    </fragment>
 
     <fragment
         android:id="@+id/Signup"
-        android:name="com.example.mobilefrontend.ui.auth.Signup"
-        android:label="fragment_signup"
-        tools:layout="@layout/fragment_signup" />
-
+        android:name="com.example.mobilefrontend.Signup"
+        android:label="Signup"
+        tools:layout="@layout/fragment_signup">
+        <action
+            android:id="@+id/action_signup_to_login"
+            app:destination="@id/Login" />
+    </fragment>
 </navigation>
