@@ -10,8 +10,11 @@ import retrofit2.http.POST
 interface RetrofitService {
     @POST("/v1/auth/login")
     suspend fun login() : Response<User>
+//
+//    @GET("v1/cards/")
+//    suspend fun getCard() : Response<Card>
 
-    companion object {
+            companion object {
         private var retrofitService: RetrofitService? = null
         fun getInstance() : RetrofitService {
             if (retrofitService == null) {
