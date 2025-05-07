@@ -1,19 +1,31 @@
 package com.example.mobilefrontend
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilefrontend.itemCard.AdapterClass
 import com.example.mobilefrontend.itemCard.DataClass
+import com.example.mobilefrontend.repository.ApiResult
+import com.example.mobilefrontend.viewmodels.CardViewModel
+import kotlinx.coroutines.launch
 
 class Home : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var dataList: ArrayList<DataClass>
+
+    //them cai nay
+    private lateinit var adapter: AdapterClass
+    private val cardModel: CardViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,13 +43,9 @@ class Home : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
-        // Initialize data
-        dataList = ArrayList()
-        getData()
 
         // Set adapter with click handler
-        recyclerView.adapter = AdapterClass(dataList) { selectedCard ->
-            // Navigate to CardDetails fragment using fragment_container
+        adapter = AdapterClass(arrayListOf()) { selectedCard ->
             val cardDetailsFragment = CardDetails.newInstance(
                 selectedCard.dataImage,
                 selectedCard.dataCardName,
@@ -45,51 +53,46 @@ class Home : Fragment() {
                 selectedCard.dataCardRarity,
                 selectedCard.dataCardCode
             )
-            requireActivity().supportFragmentManager.beginTransaction()
+            parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, cardDetailsFragment)
                 .addToBackStack(null)
                 .commit()
         }
+        recyclerView.adapter = adapter
+
+        observeCardState()
+        cardModel.getCards()
+
     }
 
-    private fun getData() {
-        // Sample data (replace with your actual data source, e.g., database or API)
-        val imageList = arrayOf(
-            "https://images.squarespace-cdn.com/content/v1/5cf4cfa4382ac0000123aa1b/1686248179919-BL2CZ95C9TV1DO51OZJT/sv2_en_192.png?format=300w",
-            "https://images.squarespace-cdn.com/content/v1/5cf4cfa4382ac0000123aa1b/1686248179919-BL2CZ95C9TV1DO51OZJT/sv2_en_192.png?format=300w",
-            "https://images.squarespace-cdn.com/content/v1/5cf4cfa4382ac0000123aa1b/1686248179919-BL2CZ95C9TV1DO51OZJT/sv2_en_192.png?format=300w"
-        )
-        val cardNameList = arrayOf(
-            "Card One",
-            "Card Two",
-            "Card Three"
-        )
-        val cardSetList = arrayOf(
-            "Set A",
-            "Set B",
-            "Set C"
-        )
-        val cardRarityList = arrayOf(
-            "Rare",
-            "Common",
-            "Legendary"
-        )
-        val cardCodeList = arrayOf(
-            "CODE001",
-            "CODE002",
-            "CODE003"
-        )
-
-        // Populate dataList
-        for (i in imageList.indices) {
-            val dataClass = DataClass(
-                imageList[i],
-                cardNameList[i],
-                cardSetList[i],
-                cardRarityList[i],
-                cardCodeList[i]
-            )
-            dataList.add(dataClass)
+    private fun observeCardState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                cardModel.cardState.collect { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            val cards = result.data ?: emptyList()
+                            adapter.updateData(cards.map {
+                                DataClass(
+                                    it.image_url,
+                                    it.name,
+                                    "Paldea Evolved",  // replace with actual fields
+                                    it.rarity,
+                                    it.code
+                                )
+                            })
+                        }
+                        is ApiResult.Loading -> {
+                            // Show loading UI (optional)
+                        }
+                        is ApiResult.Error -> {
+                            Log.e("Home", "Error: ${result.message}")
+                        }
+                        null -> {}
+                    }
+                }
+            }
         }
     }
+
 }

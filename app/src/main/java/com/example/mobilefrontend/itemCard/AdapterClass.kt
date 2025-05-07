@@ -42,6 +42,12 @@ class AdapterClass(
 
     override fun getItemCount(): Int = dataList.size
 
+    fun updateData(newData: List<DataClass>) {
+        dataList.clear()
+        dataList.addAll(newData)
+        notifyDataSetChanged()
+    }
+
     class ViewHolderClass(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val rvImage: ImageView = itemView.findViewById(R.id.imgCard)
         val rvCardName: TextView = itemView.findViewById(R.id.tvCardName)
