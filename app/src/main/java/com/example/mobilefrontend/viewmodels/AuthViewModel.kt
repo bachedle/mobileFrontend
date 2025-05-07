@@ -13,15 +13,15 @@ import kotlinx.coroutines.launch
 class AuthViewModel: ViewModel() {
     private val _userState = MutableStateFlow<ApiResult<User>?>(null)
     val userState: StateFlow<ApiResult<User>?> = _userState
-
-    fun getUser() {
-        viewModelScope.launch {
-            toResultFlow { RetrofitService.getInstance().login() }
-                .collect { result ->
-                    _userState.value = result
-                }
-        }
-    }
+//
+//    fun getUser() {
+//        viewModelScope.launch {
+//            toResultFlow { RetrofitService.getInstance().login() }
+//                .collect { result ->
+//                    _userState.value = result
+//                }
+//        }
+//    }
 
     fun update() {}
 }

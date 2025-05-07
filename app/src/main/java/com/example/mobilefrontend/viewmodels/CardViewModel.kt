@@ -12,21 +12,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class CardViewModel: ViewModel() {
-    private val _cardState = MutableStateFlow<ApiResult<Card>?>(null)
-    val cardState: StateFlow<ApiResult<Card>?> = _cardState
+    private val _cardState = MutableStateFlow<ApiResult<List<Card>>?>(null)
+    val cardState: StateFlow<ApiResult<List<Card>>?> = _cardState
 
-    fun getCard() {
+    fun getCards() {
         viewModelScope.launch {
-            toResultFlow { RetrofitService.getInstance().getCard() }
-                .collect { result ->
+            toResultFlow {
+                RetrofitService.getInstance().getCards() // Response<ApiResponse<List<Card>>>
+            }.collect { result ->
+                Log.d("CardViewModel", "Result: $result")
 
-
-                    Log.d("result", "$result")
-
-                    _cardState.value = result
-                }
+                // No need to re-wrap result.data — just pass it along
+                _cardState.value = result
+            }
         }
     }
-
-
 }

@@ -5,9 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobilefrontend.databinding.ActivityMainBinding
+import com.example.mobilefrontend.repository.ApiResult
 import com.example.mobilefrontend.viewmodels.CardViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,12 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[CardViewModel::class.java]
-        viewModel.getCard()
-
-
-        Log.d("result", "${viewModel.cardState.value}")
 
         val sharedPref = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
         val isAuthenticated = sharedPref.getBoolean("isAuthenticated", false)
@@ -36,6 +35,34 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize the ViewModel
+        viewModel = ViewModelProvider(this)[CardViewModel::class.java]
+
+        // Observe the card state
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.cardState.collect { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            val cards = result.data // ✅ Use `data`, not `metadata`
+                            Log.d("Card", "Card data: $cards")
+                        }
+                        is ApiResult.Error -> {
+                            Log.e("Card", "Error: ${result.message}") // ✅ Use `message`, not `exception`
+                        }
+                        is ApiResult.Loading -> {
+                            Log.d("Card", "Loading...") // ✅ Optional: show loading UI
+                        }
+                        null -> {
+                            Log.d("Card", "Initial state")
+                        }
+                    }
+                }
+            }
+        }
+
+        // Trigger the API call
+        viewModel.getCards()
         // Load the initial fragment and setup bottom navigation
         replaceFragment(Home())
         binding.bottomNavigation.setOnItemSelectedListener { item ->

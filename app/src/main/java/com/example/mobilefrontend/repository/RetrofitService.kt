@@ -17,7 +17,7 @@ interface RetrofitService {
 
     //
     @GET("v1/cards/")
-    suspend fun getCard(): Response<Card>
+    suspend fun getCards(): Response<ApiResponse<List<Card>>>
 
     companion object {
         private var retrofitService: RetrofitService? = null
