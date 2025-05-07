@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 
 class CardDetails : Fragment() {
 
@@ -25,14 +26,23 @@ class CardDetails : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Retrieve the individual fields from arguments
-        val dataImage = arguments?.getInt("dataImage") ?: 0
+        val dataImage = arguments?.getString("dataImage") ?: ""  // Default to empty string if null
         val dataCardName = arguments?.getString("dataCardName") ?: ""
         val dataCardSet = arguments?.getString("dataCardSet") ?: ""
         val dataCardRarity = arguments?.getString("dataCardRarity") ?: ""
         val dataCardCode = arguments?.getString("dataCardCode") ?: ""
 
+        // Use Glide to load the image URL into ImageView
+        val imageView = view.findViewById<ImageView>(R.id.ivCardImage)
+        if (dataImage.isNotEmpty()) {
+            Glide.with(requireContext())
+                .load(dataImage)
+                .placeholder(R.drawable.sample_card) // Add a placeholder image
+                .error(R.drawable.sample_card)  // Add an error image
+                .into(imageView)
+        }
+
         // Populate the UI with card details
-        view.findViewById<ImageView>(R.id.ivCardImage).setImageResource(dataImage)
         view.findViewById<TextView>(R.id.tvCardName).text = dataCardName
         view.findViewById<TextView>(R.id.tvRarity).text = dataCardRarity
         view.findViewById<TextView>(R.id.tvSet).text = dataCardSet
@@ -58,7 +68,7 @@ class CardDetails : Fragment() {
 
     companion object {
         fun newInstance(
-            dataImage: Int,
+            dataImage: String,
             dataCardName: String,
             dataCardSet: String,
             dataCardRarity: String,
@@ -66,7 +76,7 @@ class CardDetails : Fragment() {
         ): CardDetails {
             val fragment = CardDetails()
             val args = Bundle()
-            args.putInt("dataImage", dataImage)
+            args.putString("dataImage", dataImage)  // Pass the URL as a String
             args.putString("dataCardName", dataCardName)
             args.putString("dataCardSet", dataCardSet)
             args.putString("dataCardRarity", dataCardRarity)

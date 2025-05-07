@@ -67,27 +67,14 @@ class Search : Fragment() {
 
     // Function to load sample data (simulating backend data)
     private fun loadSampleData() {
+
+         val imgURL = "https://res.cloudinary.com/tcg-card/image/upload/v1746548420/cards/Quaquaval.png"
+
         originalDataList.clear()
-        originalDataList.add(DataClass(R.drawable.sample_card, "Meowscarada EX", "151", "Ultra Rare", "151-193"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Pikachu", "Base Set", "Rare", "58-102"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Charizard", "Base Set", "Rare Holo", "6-102"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Blastoise", "Base Set", "Rare Holo", "2-102"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Venusaur", "Base Set", "Rare Holo", "15-102"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Gengar", "Fossil", "Rare Holo", "5-62"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Dragonite", "Fossil", "Rare Holo", "4-62"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Mewtwo", "Base Set", "Rare Holo", "10-102"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Meowscarada", "Paldea Evolved", "Rare", "15-279"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Skeledirge EX", "Paldea Evolved", "Ultra Rare", "22-279"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Tinkaton", "Paldea Evolved", "Rare", "83-279"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Arcanine", "Jungle", "Rare", "23-64"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Gyarados", "Base Set", "Rare Holo", "6-102"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Lugia", "Neo Genesis", "Rare Holo", "9-111"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Umbreon", "Neo Destiny", "Rare Holo", "13-105"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Espeon", "Neo Discovery", "Rare Holo", "1-75"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Pidgeot", "Jungle", "Rare Holo", "8-64"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Zapdos", "Base Set", "Rare Holo", "16-102"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Articuno", "Fossil", "Rare Holo", "2-62"))
-        originalDataList.add(DataClass(R.drawable.sample_card, "Moltres", "Fossil", "Rare Holo", "12-62"))
+        originalDataList.add(DataClass(imgURL, "Meowscarada EX", "151", "Ultra Rare", "151-193"))
+        originalDataList.add(DataClass(imgURL, "Pikachu", "Base Set", "Rare", "58-102"))
+        originalDataList.add(DataClass(imgURL, "Charizard", "Base Set", "Rare Holo", "6-102"))
+        originalDataList.add(DataClass(imgURL, "Blastoise", "Base Set", "Rare Holo", "2-102"))
     }
 
     private fun filterResults(query: String) {

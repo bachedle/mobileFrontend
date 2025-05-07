@@ -9,17 +9,17 @@ class ApiResultHandler<T>(private val onSuccess: (T?) -> Unit, private val onFai
     private var loading = MutableLiveData<Boolean>()
 
     fun handleApiResult(result: ApiResult<T?>) {
-        when (result.status) {
-            ApiStatus.LOADING -> {
+        when (result.statusCode) {
+            500 -> {
                 loading.value = true
             }
 
-            ApiStatus.SUCCESS -> {
+            200 -> {
                 loading.value = false
                 onSuccess(result.data)
             }
 
-            ApiStatus.ERROR -> {
+            400-> {
                 loading.value = false
                 onFailure(result.data)
             }
