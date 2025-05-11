@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_auth"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/Login">
 
     <fragment
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_login_to_signup"
             app:destination="@id/Signup" />
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/nav_home" />
     </fragment>
 
     <fragment
@@ -24,4 +27,27 @@
             android:id="@+id/action_signup_to_login"
             app:destination="@id/Login" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.mobilefrontend.Home"
+        tools:layout="@layout/fragment_home"
+        android:label="HomeFragment"/>
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.mobilefrontend.Search"
+        tools:layout="@layout/fragment_search"
+        android:label="SearchFragment"/>
+
+    <fragment
+        android:id="@+id/nav_simulator"
+        android:name="com.example.mobilefrontend.Simulator"
+        tools:layout="@layout/fragment_simulator" />
+
+    <fragment
+        android:id="@+id/nav_users"
+        android:name="com.example.mobilefrontend.User"
+        tools:layout="@layout/fragment_user" />
+
 </navigation>

@@ -13,19 +13,14 @@
         android:layout_height="match_parent">
 
     </FrameLayout>
-
-
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:fabAlignmentMode="center"
-        app:fabAnchorMode="cradle"
-        app:fabCradleMargin="14dp"
-        app:fabCradleVerticalOffset="16dp"
-        app:fabCradleRoundedCornerRadius="6dp"
-        android:layout_gravity="bottom">
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
@@ -33,13 +28,6 @@
             android:layout_width="match_parent"
             android:background="@android:color/transparent"
             app:menu="@menu/bottom_navbar"
+            android:layout_gravity="bottom"
             android:layout_height="wrap_content" />
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-
-
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

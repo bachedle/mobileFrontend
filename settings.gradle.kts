@@ -16,9 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+
     }
 }
 
 rootProject.name = "mobileFrontend"
-include(":app")
+include(":app",":sample", ":cardstackview")
+
  

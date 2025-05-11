@@ -1,20 +1,24 @@
 package com.example.mobilefrontend.repository
 
 import com.example.mobilefrontend.model.Card
+import com.example.mobilefrontend.model.LoginRequest
 import com.example.mobilefrontend.model.User
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
 
 interface RetrofitService {
     @POST("/v1/auth/login")
-    suspend fun login(): Response<User>
+    suspend fun login(@Body request: LoginRequest): Response<ApiResponse<User>>
 
+    @POST("/v1/auth/signup")
+    suspend fun signup(): Response<User>
     //
     @GET("v1/cards/")
     suspend fun getCards(): Response<ApiResponse<List<Card>>>

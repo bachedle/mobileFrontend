@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.mobilefrontend.databinding.FragmentSignupBinding
@@ -30,14 +31,14 @@ class Signup : Fragment() {
             val password = binding.etSignupPassword.text.toString()
 
             if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
-                findNavController().navigate(R.id.action_signup_to_login)
+//                findNavController().navigate(R.id.action_signup_to_login)
             } else {
                 binding.etSignupName.error = "Please fill all fields"
             }
         }
 
         binding.tvSignin.setOnClickListener {
-            findNavController().navigate(R.id.action_signup_to_login)
+//            findNavController().navigate(R.id.action_signup_to_login)
         }
     }
 
