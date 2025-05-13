@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobilefrontend.model.LoginRequest
+import com.example.mobilefrontend.model.SignUpRequest
 import com.example.mobilefrontend.model.User
 import com.example.mobilefrontend.repository.ApiResult
 import com.example.mobilefrontend.repository.RetrofitService
@@ -32,6 +33,29 @@ class AuthViewModel(private val context: Context): ViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    fun signup(payload: SignUpRequest) {
+        viewModelScope.launch {
+            toResultFlow {
+                RetrofitService.getInstance().signup(payload)
+            }.collect { result ->
+                _userState.value = result
+                // Save token if login successful
+                if (result is ApiResult.Success) {
+                    val token = result.data?.accessToken  // Adjust based on your API response
+                    if (token != null) {
+                        DataStoreManager.saveValue(context, token)
+                    }
+                }
+            }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            DataStoreManager.clearData(context)
         }
     }
 }

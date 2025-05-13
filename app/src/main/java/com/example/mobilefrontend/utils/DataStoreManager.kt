@@ -24,4 +24,10 @@ object DataStoreManager {
         return context.dataStore.data
             .map { preferences -> preferences[AUTH_TOKEN] ?: "" }
     }
+
+    suspend fun clearData(context: Context) {
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
 }

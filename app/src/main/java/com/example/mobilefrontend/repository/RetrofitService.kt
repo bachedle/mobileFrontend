@@ -2,6 +2,7 @@ package com.example.mobilefrontend.repository
 
 import com.example.mobilefrontend.model.Card
 import com.example.mobilefrontend.model.LoginRequest
+import com.example.mobilefrontend.model.SignUpRequest
 import com.example.mobilefrontend.model.User
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +19,8 @@ interface RetrofitService {
     suspend fun login(@Body request: LoginRequest): Response<ApiResponse<User>>
 
     @POST("/v1/auth/signup")
-    suspend fun signup(): Response<User>
+    suspend fun signup(@Body request: SignUpRequest): Response<ApiResponse<User>>
+
     //
     @GET("v1/cards/")
     suspend fun getCards(): Response<ApiResponse<List<Card>>>

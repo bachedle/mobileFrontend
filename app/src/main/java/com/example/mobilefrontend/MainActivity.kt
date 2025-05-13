@@ -7,8 +7,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.launch
 import androidx.core.view.isVisible
+import androidx.navigation.NavOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.mobilefrontend.utils.DataStoreManager
+import kotlinx.coroutines.flow.first
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,10 +32,12 @@ class MainActivity : AppCompatActivity() {
 
         // 🔐 Auto-login check using DataStoreManager object
         lifecycleScope.launch {
-            DataStoreManager.getValue(applicationContext).collect { token ->
-                if (token.isNotEmpty()) {
-                    navController.navigate(R.id.action_login_to_home)
-                }
+            val token = DataStoreManager.getValue(applicationContext).first()
+            if (token.isNotEmpty() && navController.currentDestination?.id == R.id.Login) {
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.Login, true) // Pop the login screen off the back stack
+                    .build()
+                navController.navigate(R.id.action_login_to_home, null, navOptions)
             }
         }
     }
