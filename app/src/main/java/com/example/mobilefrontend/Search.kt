@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilefrontend.itemCard.AdapterClass
@@ -29,17 +30,14 @@ class Search : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = AdapterClass(dataList) { selectedCard ->
             // Navigate to CardDetails fragment when a card is clicked
-            val cardDetailsFragment = CardDetails.newInstance(
+            val action = SearchDirections.actionSearchToCardDetail(
                 selectedCard.dataImage,
                 selectedCard.dataCardName,
                 selectedCard.dataCardSet,
                 selectedCard.dataCardRarity,
                 selectedCard.dataCardCode
             )
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, cardDetailsFragment)
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
 

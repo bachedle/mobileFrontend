@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,10 +41,6 @@ class Home : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val moveToSearchFragment : TextView = view.findViewById(R.id.nav_search)
-//        moveToSearchFragment.setOnClickListener {
-//            findNavController().navigate(R.id.action_home_to_search)
-//        }
         // Initialize RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -52,17 +49,14 @@ class Home : Fragment() {
 
         // Set adapter with click handler
         adapter = AdapterClass(arrayListOf()) { selectedCard ->
-            val cardDetailsFragment = CardDetails.newInstance(
+            val action = HomeDirections.actionHomeToCardDetail(
                 selectedCard.dataImage,
                 selectedCard.dataCardName,
                 selectedCard.dataCardSet,
                 selectedCard.dataCardRarity,
                 selectedCard.dataCardCode
             )
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, cardDetailsFragment)
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
 

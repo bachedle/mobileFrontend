@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilefrontend.itemCard.AdapterClass
@@ -35,17 +36,14 @@ class Collection : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         adapter = AdapterClass(arrayListOf()) { selectedCard ->
-            val cardDetailsFragment = CardDetails.newInstance(
-                selectedCard.dataImage,
-                selectedCard.dataCardName,
-                selectedCard.dataCardSet,
-                selectedCard.dataCardRarity,
-                selectedCard.dataCardCode
-            )
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, cardDetailsFragment)
-                .addToBackStack(null)
-                .commit()
+//            val action = HomeDirections.actionHomeToCardDetail(
+//                selectedCard.dataImage,
+//                selectedCard.dataCardName,
+//                selectedCard.dataCardSet,
+//                selectedCard.dataCardRarity,
+//                selectedCard.dataCardCode
+//            )
+//            findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
 

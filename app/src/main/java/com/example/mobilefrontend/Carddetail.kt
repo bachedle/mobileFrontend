@@ -26,11 +26,13 @@ class CardDetails : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Retrieve the individual fields from arguments
-        val dataImage = arguments?.getString("dataImage") ?: ""  // Default to empty string if null
-        val dataCardName = arguments?.getString("dataCardName") ?: ""
-        val dataCardSet = arguments?.getString("dataCardSet") ?: ""
-        val dataCardRarity = arguments?.getString("dataCardRarity") ?: ""
-        val dataCardCode = arguments?.getString("dataCardCode") ?: ""
+        val args = CardDetailsArgs.fromBundle(requireArguments())
+
+        val dataImage = args.dataImage
+        val dataCardName = args.dataCardName
+        val dataCardSet = args.dataCardSet
+        val dataCardRarity = args.dataCardRarity
+        val dataCardCode = args.dataCardCode
 
         // Use Glide to load the image URL into ImageView
         val imageView = view.findViewById<ImageView>(R.id.ivCardImage)

@@ -35,13 +35,21 @@
         android:id="@+id/nav_home"
         android:name="com.example.mobilefrontend.Home"
         tools:layout="@layout/fragment_home"
-        android:label="HomeFragment"/>
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_home_to_card_detail"
+            app:destination="@id/llCardDetailsRoot" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_search"
         android:name="com.example.mobilefrontend.Search"
         tools:layout="@layout/fragment_search"
-        android:label="SearchFragment"/>
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/action_search_to_card_detail"
+            app:destination="@id/llCardDetailsRoot" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_simulator"
@@ -52,5 +60,32 @@
         android:id="@+id/nav_users"
         android:name="com.example.mobilefrontend.User"
         tools:layout="@layout/fragment_user" />
+
+    <fragment
+        android:id="@+id/llCardDetailsRoot"
+        android:name="com.example.mobilefrontend.CardDetails"
+        tools:layout="@layout/fragment_carddetail"
+        android:label="CardDetails">
+
+        <argument
+            android:name="dataImage"
+            app:argType="string" />
+
+        <argument
+            android:name="dataCardName"
+            app:argType="string" />
+
+        <argument
+            android:name="dataCardSet"
+            app:argType="string" />
+
+        <argument
+            android:name="dataCardRarity"
+            app:argType="string" />
+
+        <argument
+            android:name="dataCardCode"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
