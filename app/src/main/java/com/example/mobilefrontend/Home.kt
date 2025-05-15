@@ -63,25 +63,25 @@ class Home : Fragment() {
         recyclerView.adapter = adapter
 
         observeCardState()
-        cardModel.getCards()
+        cardModel.getUserCollection(3)
 
     }
 
     private fun observeCardState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                cardModel.cardState.collect { result ->
+                cardModel.userCollectionState.collect { result ->
                     when (result) {
                         is ApiResult.Success -> {
                             val cards = result.data ?: emptyList()
-                            adapter.updateData(cards.map {
+                            adapter.updateData(cards.takeLast(3).map {
                                 DataClass(
-                                    it.id,
-                                    it.image_url,
-                                    it.name,
-                                    "Paldea Evolved",  // replace with actual fields
-                                    it.rarity,
-                                    it.code
+                                    it.card.id,
+                                    it.card.image_url,
+                                    it.card.name,
+                                    "Paldea Evolved",
+                                    it.card.rarity,
+                                    it.card.code
                                 )
                             })
                         }

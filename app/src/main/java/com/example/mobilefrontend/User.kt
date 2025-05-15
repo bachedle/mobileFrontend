@@ -19,7 +19,7 @@ class User : Fragment() {
         val collectionButton = view.findViewById<TextView>(R.id.btnAddToCollection)
         collectionButton.setOnClickListener {
             val action = UserDirections.actionUsersToCollection(
-                1
+                3
             )
             findNavController().navigate(action)
         }

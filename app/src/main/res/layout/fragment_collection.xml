@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/collection"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0">
+    android:background="#F0F0F0"
+    android:orientation="vertical"
+    tools:context=".Collection">
 
     <TextView
-        android:id="@+id/tvHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -38,6 +40,8 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center|start"
                 android:layout_marginStart="35dp"
+
+
                 android:max="270"
                 android:progress="50"
                 android:progressDrawable="@drawable/progress_drawable" />
@@ -73,6 +77,4 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:padding="8dp" />
-
-
-</FrameLayout>
+</LinearLayout>
