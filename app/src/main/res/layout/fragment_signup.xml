@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sign Up"
                 android:textColor="#FFFFFF"
-                android:background="#8B0000"
+                android:background="@color/pokemon_red"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp" />
 

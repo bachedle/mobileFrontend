@@ -1,0 +1,27 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background with black stroke -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <stroke android:width="5dp" android:color="#000000" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+    <!-- Progress (red fill) with inset to stay inside stroke -->
+    <item android:id="@android:id/progress">
+        <inset
+            android:insetLeft="5dp"
+            android:insetTop="5dp"
+            android:insetRight="5dp"
+            android:insetBottom="5dp">
+            <clip>
+                <shape android:shape="rectangle">
+                    <solid android:color="#E53935" />
+                    <corners android:radius="20dp" />
+                </shape>
+            </clip>
+        </inset>
+    </item>
+</layer-list>
