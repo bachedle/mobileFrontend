@@ -36,14 +36,16 @@ class Collection : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         adapter = AdapterClass(arrayListOf()) { selectedCard ->
-//            val action = HomeDirections.actionHomeToCardDetail(
-//                selectedCard.dataImage,
-//                selectedCard.dataCardName,
-//                selectedCard.dataCardSet,
-//                selectedCard.dataCardRarity,
-//                selectedCard.dataCardCode
-//            )
-//            findNavController().navigate(action)
+            val action = CollectionDirections.actionCollectionToCardDetail(
+                selectedCard.dataId,
+                selectedCard.dataImage,
+                selectedCard.dataCardName,
+                selectedCard.dataCardSet,
+                selectedCard.dataCardRarity,
+                selectedCard.dataCardCode,
+                true
+            )
+            findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
 
@@ -62,6 +64,7 @@ class Collection : Fragment() {
                             val cards = result.data ?: emptyList()
                             adapter.updateData(cards.map {
                                 DataClass(
+                                    it.id,
                                     it.image_url,
                                     it.name,
                                     "Paldea Evolved", // Replace with real values if available

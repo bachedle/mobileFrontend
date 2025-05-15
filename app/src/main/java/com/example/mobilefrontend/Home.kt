@@ -50,11 +50,13 @@ class Home : Fragment() {
         // Set adapter with click handler
         adapter = AdapterClass(arrayListOf()) { selectedCard ->
             val action = HomeDirections.actionHomeToCardDetail(
+                selectedCard.dataId,
                 selectedCard.dataImage,
                 selectedCard.dataCardName,
                 selectedCard.dataCardSet,
                 selectedCard.dataCardRarity,
-                selectedCard.dataCardCode
+                selectedCard.dataCardCode,
+                true
             )
             findNavController().navigate(action)
         }
@@ -74,6 +76,7 @@ class Home : Fragment() {
                             val cards = result.data ?: emptyList()
                             adapter.updateData(cards.map {
                                 DataClass(
+                                    it.id,
                                     it.image_url,
                                     it.name,
                                     "Paldea Evolved",  // replace with actual fields

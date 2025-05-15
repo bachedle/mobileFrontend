@@ -1,5 +1,7 @@
 package com.example.mobilefrontend.repository
 
+import com.example.mobilefrontend.model.AddCardToCollectionRequest
+import com.example.mobilefrontend.model.Collection
 import com.example.mobilefrontend.model.Card
 import com.example.mobilefrontend.model.LoginRequest
 import com.example.mobilefrontend.model.SignUpRequest
@@ -24,6 +26,9 @@ interface RetrofitService {
     //
     @GET("v1/cards/")
     suspend fun getCards(): Response<ApiResponse<List<Card>>>
+
+    @POST("/v1/collections")
+    suspend fun addCardToCollection(@Body request: AddCardToCollectionRequest): Response<ApiResponse<Collection>>
 
     companion object {
         private var retrofitService: RetrofitService? = null

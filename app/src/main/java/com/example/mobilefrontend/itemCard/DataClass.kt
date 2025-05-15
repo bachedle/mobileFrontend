@@ -1,6 +1,7 @@
 package com.example.mobilefrontend.itemCard
 
 data class DataClass(
+    val dataId: Int,
     var dataImage: String,
     var dataCardName: String,
     var dataCardSet: String,

@@ -18,10 +18,7 @@ class User : Fragment() {
 
         val collectionButton = view.findViewById<TextView>(R.id.btnAddToCollection)
         collectionButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, Collection()) // Make sure this is your actual container ID
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(R.id.action_users_to_collection)
         }
 
         return view
