@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface RetrofitService {
@@ -29,6 +30,9 @@ interface RetrofitService {
 
     @POST("/v1/collections")
     suspend fun addCardToCollection(@Body request: AddCardToCollectionRequest): Response<ApiResponse<Collection>>
+
+    @GET("/v1/collections/users/{userId}")
+    suspend fun getCollectionByUserId(@Path("userId") userId: Int): Response<ApiResponse<List<Collection>>>
 
     companion object {
         private var retrofitService: RetrofitService? = null

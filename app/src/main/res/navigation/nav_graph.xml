@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_collection_to_card_detail"
             app:destination="@id/llCardDetailsRoot" />
+        <argument
+            android:name="userId"
+            app:argType="integer" />
     </fragment>
 
     <fragment

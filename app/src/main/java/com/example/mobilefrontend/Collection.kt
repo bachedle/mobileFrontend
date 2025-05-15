@@ -32,6 +32,11 @@ class Collection : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_collection, container, false)
 
+        // Retrieve the individual fields from arguments
+        val args = CollectionArgs.fromBundle(requireArguments())
+
+        val userId = args.userId
+
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
@@ -50,7 +55,7 @@ class Collection : Fragment() {
         recyclerView.adapter = adapter
 
         observeCardState()
-        cardModel.getCards()
+        cardModel.getUserCollection(userId = userId)
 
         return view
     }
@@ -58,18 +63,18 @@ class Collection : Fragment() {
     private fun observeCardState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                cardModel.cardState.collect { result ->
+                cardModel.userCollectionState.collect { result ->
                     when (result) {
                         is ApiResult.Success -> {
                             val cards = result.data ?: emptyList()
                             adapter.updateData(cards.map {
                                 DataClass(
-                                    it.id,
-                                    it.image_url,
-                                    it.name,
+                                    it.card.id,
+                                    it.card.image_url,
+                                    it.card.name,
                                     "Paldea Evolved", // Replace with real values if available
-                                    it.rarity,
-                                    it.code
+                                    it.card.rarity,
+                                    it.card.code
                                 )
                             })
                         }
