@@ -10,16 +10,30 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
+import com.example.mobilefrontend.databinding.FragmentCarddetailBinding
+import com.example.mobilefrontend.model.AddCardToCollectionRequest
+import com.example.mobilefrontend.repository.ApiResult
+import com.example.mobilefrontend.viewmodels.CardViewModel
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
+import kotlin.getValue
 
 class CardDetails : Fragment() {
+    private var _binding: FragmentCarddetailBinding? = null
+    private val binding get() = _binding!!
+    private val cardModel: CardViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_carddetail, container, false)
+        _binding = FragmentCarddetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,11 +42,13 @@ class CardDetails : Fragment() {
         // Retrieve the individual fields from arguments
         val args = CardDetailsArgs.fromBundle(requireArguments())
 
+        val dataId = args.dataId
         val dataImage = args.dataImage
         val dataCardName = args.dataCardName
         val dataCardSet = args.dataCardSet
         val dataCardRarity = args.dataCardRarity
         val dataCardCode = args.dataCardCode
+        val existInCollection = args.existInCollection
 
         // Use Glide to load the image URL into ImageView
         val imageView = view.findViewById<ImageView>(R.id.ivCardImage)
@@ -45,46 +61,65 @@ class CardDetails : Fragment() {
         }
 
         // Populate the UI with card details
-        view.findViewById<TextView>(R.id.tvCardName).text = dataCardName
-        view.findViewById<TextView>(R.id.tvRarity).text = dataCardRarity
-        view.findViewById<TextView>(R.id.tvSet).text = dataCardSet
-        view.findViewById<TextView>(R.id.tvCode).text = dataCardCode
+        binding.tvCardName.text = dataCardName
+        binding.tvRarity.text = dataCardRarity
+        binding.tvSet.text = dataCardSet
+        binding.tvCode.text = dataCardCode
 
-        // Add to Collection button functionality (placeholder)
-        val addToCollectionButton = view.findViewById<Button>(R.id.btnAddToCollection)
-        addToCollectionButton.setOnClickListener {
-            Toast.makeText(context, "Added to Collection: $dataCardName", Toast.LENGTH_SHORT).show()
-            // TODO: Implement actual collection logic here
+        if (existInCollection) {
+            binding.btnAddToCollection.visibility = View.GONE
         }
 
-        // Ensure content is not hidden behind bottom navigation
-        val rootLayout = view.findViewById<LinearLayout>(R.id.llCardDetailsRoot)
-        val extraPadding = (resources.displayMetrics.density * 100).toInt()
-        rootLayout.setPadding(
-            rootLayout.paddingLeft,
-            rootLayout.paddingTop,
-            rootLayout.paddingRight,
-            extraPadding
+        // Add to Collection
+        binding.btnAddToCollection.setOnClickListener {
+            val payload = AddCardToCollectionRequest(user_id = 1, card_id = dataId)
+            cardModel.addToCollection(payload)
+            it.isEnabled = false
+        }
+
+
+        // Observe result and navigate or re-enable button
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                cardModel.collectionState
+                    .filterNotNull()
+                    .collect { result ->
+                        when (result) {
+                            is ApiResult.Success -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Added to Collection: $dataCardName",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ApiResult.Error -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Failed to add: ${result.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ApiResult.Loading -> {
+                                // Optionally show loading state
+                            }
+                        }
+                        cardModel.resetCollectionState()
+                        binding.btnAddToCollection.isEnabled = true
+                    }
+            }
+        }
+
+        // Prevent bottom nav overlap (if needed)
+        binding.llCardDetailsRoot.setPadding(
+            binding.llCardDetailsRoot.paddingLeft,
+            binding.llCardDetailsRoot.paddingTop,
+            binding.llCardDetailsRoot.paddingRight,
+            (resources.displayMetrics.density * 100).toInt()
         )
     }
 
-    companion object {
-        fun newInstance(
-            dataImage: String,
-            dataCardName: String,
-            dataCardSet: String,
-            dataCardRarity: String,
-            dataCardCode: String
-        ): CardDetails {
-            val fragment = CardDetails()
-            val args = Bundle()
-            args.putString("dataImage", dataImage)  // Pass the URL as a String
-            args.putString("dataCardName", dataCardName)
-            args.putString("dataCardSet", dataCardSet)
-            args.putString("dataCardRarity", dataCardRarity)
-            args.putString("dataCardCode", dataCardCode)
-            fragment.arguments = args
-            return fragment
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

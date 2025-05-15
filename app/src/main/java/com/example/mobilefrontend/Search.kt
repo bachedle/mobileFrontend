@@ -31,11 +31,13 @@ class Search : Fragment() {
         adapter = AdapterClass(dataList) { selectedCard ->
             // Navigate to CardDetails fragment when a card is clicked
             val action = SearchDirections.actionSearchToCardDetail(
+                selectedCard.dataId,
                 selectedCard.dataImage,
                 selectedCard.dataCardName,
                 selectedCard.dataCardSet,
                 selectedCard.dataCardRarity,
-                selectedCard.dataCardCode
+                selectedCard.dataCardCode,
+                false
             )
             findNavController().navigate(action)
         }
@@ -69,10 +71,10 @@ class Search : Fragment() {
          val imgURL = "https://res.cloudinary.com/tcg-card/image/upload/v1746548420/cards/Quaquaval.png"
 
         originalDataList.clear()
-        originalDataList.add(DataClass(imgURL, "Meowscarada EX", "151", "Ultra Rare", "151-193"))
-        originalDataList.add(DataClass(imgURL, "Pikachu", "Base Set", "Rare", "58-102"))
-        originalDataList.add(DataClass(imgURL, "Charizard", "Base Set", "Rare Holo", "6-102"))
-        originalDataList.add(DataClass(imgURL, "Blastoise", "Base Set", "Rare Holo", "2-102"))
+        originalDataList.add(DataClass(1, imgURL, "Meowscarada EX", "151", "Ultra Rare", "151-193"))
+        originalDataList.add(DataClass(2, imgURL, "Pikachu", "Base Set", "Rare", "58-102"))
+        originalDataList.add(DataClass(3, imgURL, "Charizard", "Base Set", "Rare Holo", "6-102"))
+        originalDataList.add(DataClass(4, imgURL, "Blastoise", "Base Set", "Rare Holo", "2-102"))
     }
 
     private fun filterResults(query: String) {

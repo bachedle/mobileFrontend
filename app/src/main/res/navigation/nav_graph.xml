@@ -59,13 +59,33 @@
     <fragment
         android:id="@+id/nav_users"
         android:name="com.example.mobilefrontend.User"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user">
+        <action
+            android:id="@+id/action_users_to_collection"
+            app:destination="@id/collection" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/collection"
+        android:name="com.example.mobilefrontend.Collection"
+        tools:layout="@layout/fragment_collection">
+        <action
+            android:id="@+id/action_collection_to_card_detail"
+            app:destination="@id/llCardDetailsRoot" />
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/llCardDetailsRoot"
         android:name="com.example.mobilefrontend.CardDetails"
         tools:layout="@layout/fragment_carddetail"
         android:label="CardDetails">
+
+        <argument
+            android:name="dataId"
+            app:argType="integer" />
 
         <argument
             android:name="dataImage"
@@ -86,6 +106,10 @@
         <argument
             android:name="dataCardCode"
             app:argType="string" />
+
+        <argument
+            android:name="existInCollection"
+            app:argType="boolean" />
     </fragment>
 
 </navigation>

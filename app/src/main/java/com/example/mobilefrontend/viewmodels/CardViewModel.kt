@@ -3,7 +3,9 @@ package com.example.mobilefrontend.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobilefrontend.model.AddCardToCollectionRequest
 import com.example.mobilefrontend.model.Card
+import com.example.mobilefrontend.model.Collection
 import com.example.mobilefrontend.repository.ApiResult
 import com.example.mobilefrontend.repository.RetrofitService
 import com.example.mobilefrontend.repository.toResultFlow
@@ -14,6 +16,12 @@ import kotlinx.coroutines.launch
 class CardViewModel: ViewModel() {
     private val _cardState = MutableStateFlow<ApiResult<List<Card>>?>(null)
     val cardState: StateFlow<ApiResult<List<Card>>?> = _cardState
+
+    private val _collectionState = MutableStateFlow<ApiResult<Collection>?>(null)
+    val collectionState: StateFlow<ApiResult<Collection>?> = _collectionState
+
+    private val _userCollectionState = MutableStateFlow<ApiResult<List<Collection>>?>(null)
+    val userCollectionState: StateFlow<ApiResult<List<Collection>>?> = _userCollectionState
 
     fun getCards() {
         viewModelScope.launch {
@@ -26,5 +34,37 @@ class CardViewModel: ViewModel() {
                 _cardState.value = result
             }
         }
+    }
+
+    fun addToCollection(payload: AddCardToCollectionRequest) {
+        viewModelScope.launch {
+            toResultFlow {
+                RetrofitService.getInstance().addCardToCollection(payload)
+            }.collect { result ->
+                _collectionState.value = result
+                Log.d("CardViewModel", "Result: $result")
+            }
+        }
+    }
+
+    fun resetCollectionState() {
+        _collectionState.value = null
+        Log.d("CardViewModel", "Reset collection state")
+    }
+
+    fun getUserCollection(userId: Int) {
+        viewModelScope.launch {
+            toResultFlow {
+                RetrofitService.getInstance().getCollectionByUserId(userId)
+            }.collect { result ->
+                _userCollectionState.value = result
+                Log.d("CardViewModel", "User collection result: $result")
+            }
+        }
+    }
+
+    fun resetUserCollectionState() {
+        _userCollectionState.value = null
+        Log.d("CardViewModel", "Reset user collection state")
     }
 }

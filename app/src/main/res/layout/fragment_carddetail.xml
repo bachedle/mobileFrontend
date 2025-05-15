@@ -1,141 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llCardDetailsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CardDetails"
-    android:fillViewport="true">
+    android:background="#F0F0F0"
+    tools:context=".CardDetails">
 
-    <LinearLayout
-        android:id="@+id/llCardDetailsRoot"
+    <!-- Main scrollable content -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-
-    <!-- Header -->
-        <TextView
-            android:id="@+id/tvHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="Cards"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <!-- Set Logo -->
-        <ImageView
-            android:id="@+id/ivSetLogo"
-            android:layout_width="272dp"
-            android:layout_height="68dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/sample_set_logo" />
-
-        <!-- Card Image -->
-        <ImageView
-            android:id="@+id/ivCardImage"
-            android:layout_width="274dp"
-            android:layout_height="301dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            android:scaleType="fitCenter" />
-
-        <!-- Add to Collection Button -->
-        <Button
-            android:id="@+id/btnAddToCollection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="#D32F2F"
-            android:text="Add to Collection"
-            android:textColor="#FFFFFF" />
-
-        <!-- Card Details Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="#FFFFFF"
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Header -->
             <TextView
+                android:id="@+id/tvHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:text="CARD DETAILS"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="Cards"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#000000" />
 
-            <TextView
-                android:id="@+id/tvCardNameLabel"
+            <!-- Set Logo -->
+            <ImageView
+                android:id="@+id/ivSetLogo"
+                android:layout_width="272dp"
+                android:layout_height="68dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/sample_set_logo" />
+
+            <!-- Card Image -->
+            <ImageView
+                android:id="@+id/ivCardImage"
+                android:layout_width="274dp"
+                android:layout_height="301dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:scaleType="fitCenter" />
+
+            <!-- Add to Collection Button -->
+            <Button
+                android:id="@+id/btnAddToCollection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:text="NAME"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#D32F2F"
+                android:text="Add to Collection"
+                android:textColor="#FFFFFF" />
 
-            <TextView
-                android:id="@+id/tvCardName"
+            <!-- Card Details Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:text="Meowscarada EX"
-                android:textSize="14sp" />
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tvRarityLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:text="RARITY"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="CARD DETAILS"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
 
-            <TextView
-                android:id="@+id/tvRarity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:text="Special Illustration Rare"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvCardNameLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:text="NAME"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
 
-            <TextView
-                android:id="@+id/tvSetLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:text="SETS"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvCardName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="Meowscarada EX"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
 
-            <TextView
-                android:id="@+id/tvSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Paldea Evolved"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvRarityLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:text="RARITY"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
 
-            <TextView
-                android:id="@+id/tvCodeLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp"
-                android:text="CARD CODE"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvRarity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="Special Illustration Rare"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
 
-            <TextView
-                android:id="@+id/tvCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="EX-123-ABC"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvSetLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:text="SETS"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tvSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Paldea Evolved"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tvCodeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="4dp"
+                    android:text="CARD CODE"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tvCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="EX-123-ABC"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</FrameLayout>

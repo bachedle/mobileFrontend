@@ -1,5 +1,7 @@
 package com.example.mobilefrontend.repository
 
+import com.example.mobilefrontend.model.AddCardToCollectionRequest
+import com.example.mobilefrontend.model.Collection
 import com.example.mobilefrontend.model.Card
 import com.example.mobilefrontend.model.LoginRequest
 import com.example.mobilefrontend.model.SignUpRequest
@@ -12,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface RetrofitService {
@@ -24,6 +27,12 @@ interface RetrofitService {
     //
     @GET("v1/cards/")
     suspend fun getCards(): Response<ApiResponse<List<Card>>>
+
+    @POST("/v1/collections")
+    suspend fun addCardToCollection(@Body request: AddCardToCollectionRequest): Response<ApiResponse<Collection>>
+
+    @GET("/v1/collections/users/{userId}")
+    suspend fun getCollectionByUserId(@Path("userId") userId: Int): Response<ApiResponse<List<Collection>>>
 
     companion object {
         private var retrofitService: RetrofitService? = null
