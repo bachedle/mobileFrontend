@@ -26,7 +26,7 @@ class CardViewModel: ViewModel() {
     fun getCards() {
         viewModelScope.launch {
             toResultFlow {
-                RetrofitService.getInstance().getCards() // Response<ApiResponse<List<Card>>>
+                RetrofitService.get().getCards() // Response<ApiResponse<List<Card>>>
             }.collect { result ->
                 Log.d("CardViewModel", "Result: $result")
 
@@ -39,7 +39,7 @@ class CardViewModel: ViewModel() {
     fun addToCollection(payload: AddCardToCollectionRequest) {
         viewModelScope.launch {
             toResultFlow {
-                RetrofitService.getInstance().addCardToCollection(payload)
+                RetrofitService.get().addCardToCollection(payload)
             }.collect { result ->
                 _collectionState.value = result
                 Log.d("CardViewModel", "Result: $result")
@@ -55,7 +55,7 @@ class CardViewModel: ViewModel() {
     fun getUserCollection(userId: Int) {
         viewModelScope.launch {
             toResultFlow {
-                RetrofitService.getInstance().getCollectionByUserId(userId)
+                RetrofitService.get().getCollectionByUserId(userId)
             }.collect { result ->
                 _userCollectionState.value = result
                 Log.d("CardViewModel", "User collection result: $result")

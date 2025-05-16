@@ -19,12 +19,14 @@ import com.example.mobilefrontend.repository.ApiResult
 import com.example.mobilefrontend.viewmodels.AuthViewModel
 import com.example.mobilefrontend.viewmodels.BaseViewModelFactory
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.getValue
 
 class Signup : Fragment() {
 
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +38,6 @@ class Signup : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val factory = BaseViewModelFactory {
-            AuthViewModel(requireContext().applicationContext)
-        }
-        viewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

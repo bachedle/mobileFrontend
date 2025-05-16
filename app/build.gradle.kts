@@ -104,4 +104,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     implementation("com.github.yuyakaido:CardStackView:v2.3.4")
+
+    implementation(libs.koin.android)
 }

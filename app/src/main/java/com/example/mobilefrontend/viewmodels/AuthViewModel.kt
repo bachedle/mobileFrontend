@@ -22,7 +22,7 @@ class AuthViewModel(private val context: Context): ViewModel() {
     fun login(payload: LoginRequest) {
         viewModelScope.launch {
             toResultFlow {
-                RetrofitService.getInstance().login(payload)
+                RetrofitService.get().login(payload)
             }.collect { result ->
                 _userState.value = result
                 // Save token if login successful
@@ -39,7 +39,7 @@ class AuthViewModel(private val context: Context): ViewModel() {
     fun signup(payload: SignUpRequest) {
         viewModelScope.launch {
             toResultFlow {
-                RetrofitService.getInstance().signup(payload)
+                RetrofitService.get().signup(payload)
             }.collect { result ->
                 _userState.value = result
                 // Save token if login successful

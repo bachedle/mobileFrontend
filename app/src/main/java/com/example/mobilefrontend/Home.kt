@@ -2,17 +2,14 @@ package com.example.mobilefrontend
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,15 +17,20 @@ import com.example.mobilefrontend.itemCard.AdapterClass
 import com.example.mobilefrontend.itemCard.DataClass
 import com.example.mobilefrontend.repository.ApiResult
 import com.example.mobilefrontend.viewmodels.CardViewModel
+import com.example.mobilefrontend.viewmodels.UserViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class Home : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 
-    //them cai nay
     private lateinit var adapter: AdapterClass
-    private val cardModel: CardViewModel by viewModels()
+    private val cardModel: CardViewModel by viewModel()
+    private val userViewModel: UserViewModel by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,8 +65,14 @@ class Home : Fragment() {
         recyclerView.adapter = adapter
 
         observeCardState()
-        cardModel.getUserCollection(3)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            // suspend until we get a non-null ID, then cancel
+            val id = userViewModel.userProfileState
+                .mapNotNull { it?.data?.id }
+                .first()
+            cardModel.getUserCollection(id)
+        }
     }
 
     private fun observeCardState() {

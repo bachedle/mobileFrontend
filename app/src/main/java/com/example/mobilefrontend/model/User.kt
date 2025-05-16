@@ -6,3 +6,9 @@ data class User(
     val password: String,
     val accessToken: String,
 )
+
+data class UserProfile(
+    val id: Int,
+    val username: String,
+    val email: String,
+)
