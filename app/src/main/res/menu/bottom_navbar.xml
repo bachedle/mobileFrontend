@@ -9,7 +9,7 @@
         android:icon="@drawable/search"
         android:title="Search" />
     <item
-        android:id="@+id/nav_simulator"
+        android:id="@+id/nav_simulator_main"
         android:icon="@drawable/pokeball"
         android:title="Simulator"/>
     <item

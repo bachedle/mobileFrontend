@@ -54,11 +54,7 @@
     <fragment
         android:id="@+id/nav_simulator"
         android:name="com.example.mobilefrontend.Simulator"
-        tools:layout="@layout/fragment_simulator" >
-        <action
-            android:id="@+id/action_nav_simulator_to_cardSwipe"
-            app:destination="@id/cardSwipe" />
-    </fragment>
+        tools:layout="@layout/fragment_simulator" />
 
     <fragment
         android:id="@+id/nav_users"
@@ -115,10 +111,19 @@
             android:name="existInCollection"
             app:argType="boolean" />
     </fragment>
+
     <fragment
-        android:id="@+id/cardSwipe"
-        android:name="com.example.mobilefrontend.CardSwipe"
-        android:label="fragment_card_swipe"
-        tools:layout="@layout/fragment_card_swipe" />
+        android:id="@+id/nav_simulator_main"
+        android:name="com.example.mobilefrontend.SimulatorMain"
+        android:label="SimulatorMain" >
+        <action
+            android:id="@+id/action_simulatorMain_to_simulator"
+            app:destination="@id/nav_simulator">
+            <argument
+                android:name="setName"
+                app:argType="string" />
+        </action>
+    </fragment>
+
 
 </navigation>

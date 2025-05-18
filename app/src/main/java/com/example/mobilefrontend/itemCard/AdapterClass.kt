@@ -26,8 +26,8 @@ class AdapterClass(
         // Load image from URL using Glide
         Glide.with(holder.itemView.context)
             .load(currentItem.dataImage)
-            .placeholder(R.drawable.sample_card) // optional fallback image
-            .error(R.drawable.sample_card) // optional error image
+            .placeholder(R.drawable.samplecard) // optional fallback image
+            .error(R.drawable.samplecard) // optional error image
             .into(holder.rvImage)
 
         holder.rvCardName.text = currentItem.dataCardName

@@ -106,4 +106,6 @@ dependencies {
     implementation("com.github.yuyakaido:CardStackView:v2.3.4")
 
     implementation(libs.koin.android)
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+
 }

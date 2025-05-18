@@ -5,10 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -55,8 +52,8 @@ class CardDetails : Fragment() {
         if (dataImage.isNotEmpty()) {
             Glide.with(requireContext())
                 .load(dataImage)
-                .placeholder(R.drawable.sample_card) // Add a placeholder image
-                .error(R.drawable.sample_card)  // Add an error image
+                .placeholder(R.drawable.samplecard) // Add a placeholder image
+                .error(R.drawable.samplecard)  // Add an error image
                 .into(imageView)
         }
 

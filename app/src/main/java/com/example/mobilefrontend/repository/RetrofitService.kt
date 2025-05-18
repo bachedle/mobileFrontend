@@ -22,28 +22,28 @@ import retrofit2.http.Path
 interface RetrofitService {
 
     //Authentication
-    @POST("/v1/auth/login")
+    @POST("/v1/api/auth/login")
     suspend fun login(@Body request: LoginRequest): Response<ApiResponse<User>>
 
-    @POST("/v1/auth/signup")
+    @POST("/v1/api/auth/signup")
     suspend fun signup(@Body request: SignUpRequest): Response<ApiResponse<User>>
 
     //User
-    @GET("/v1/users/me")
+    @GET("/v1/api/users/me")
     suspend fun getUserProfile(): Response<ApiResponse<UserProfile>>
 
     //Cards
-    @GET("v1/cards/")
+    @GET("/v1/api/cards/")
     suspend fun getCards(): Response<ApiResponse<List<Card>>>
 
-    @POST("/v1/collections")
+    @POST("/v1/api/collections")
     suspend fun addCardToCollection(@Body request: AddCardToCollectionRequest): Response<ApiResponse<Collection>>
 
-    @GET("/v1/collections/users/{userId}")
+    @GET("/v1/api/collections/users/{userId}")
     suspend fun getCollectionByUserId(@Path("userId") userId: Int): Response<ApiResponse<List<Collection>>>
 
     companion object {
-        private const val BASE_URL = "https://yourrlove.com/"
+        private const val BASE_URL = "https://yourrlove.com"
 
         @Volatile
         private var instance: RetrofitService? = null
