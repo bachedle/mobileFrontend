@@ -1,35 +1,55 @@
 package com.example.mobilefrontend
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobilefrontend.databinding.FragmentLoginBinding
+import com.example.mobilefrontend.databinding.FragmentSearchBinding
 import com.example.mobilefrontend.itemCard.AdapterClass
 import com.example.mobilefrontend.itemCard.DataClass
+import com.example.mobilefrontend.repository.ApiResult
+import com.example.mobilefrontend.viewmodels.CardViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class Search : Fragment() {
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var adapter: AdapterClass
     private val dataList = ArrayList<DataClass>()
     private val originalDataList = ArrayList<DataClass>()
+    private val cardModel: CardViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Initialize RecyclerView
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rvCardList)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Setup RecyclerView
+        binding.rvCardList.layoutManager = LinearLayoutManager(context)
+        binding.rvCardList.setHasFixedSize(true)
+
         adapter = AdapterClass(dataList) { selectedCard ->
-            // Navigate to CardDetails fragment when a card is clicked
             val action = SearchDirections.actionSearchToCardDetail(
                 selectedCard.dataId,
                 selectedCard.dataImage,
@@ -41,51 +61,70 @@ class Search : Fragment() {
             )
             findNavController().navigate(action)
         }
-        recyclerView.adapter = adapter
+        binding.rvCardList.adapter = adapter
 
-        // Load sample data simulating backend response
-        loadSampleData()
+        observeCardState()
 
         // Search functionality
-        val searchEditText = view.findViewById<EditText>(R.id.etSearch)
-        val searchButton = view.findViewById<ImageView>(R.id.ivSearch)
-
-        searchButton.setOnClickListener {
-            val query = searchEditText.text.toString().trim()
-            filterResults(query)
+        binding.ivSearch.setOnClickListener {
+            val query = binding.etSearch.text.toString().trim()
+            cardModel.getCards(keyword = query)
         }
 
-        // Camera scan placeholder (simulate scanning a specific card)
-        val cameraButton = view.findViewById<ImageView>(R.id.ivCamera)
-        cameraButton.setOnClickListener {
-            // Simulate a scan result (e.g., looking for "Meowscarada")
-            filterResults("Meowscarada")
-        }
-
-        return view
+        // Example camera button if needed
+//        binding.ivCamera.setOnClickListener {
+//            cardModel.getCards(keyword = "Meowscarada")
+//        }
     }
 
-    // Function to load sample data (simulating backend data)
-    private fun loadSampleData() {
 
-         val imgURL = "https://res.cloudinary.com/tcg-card/image/upload/v1746548420/cards/Quaquaval.png"
+    private fun observeCardState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                cardModel.cardState.collect { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            val cards = result.data ?: emptyList()
 
-        originalDataList.clear()
-        originalDataList.add(DataClass(1, imgURL, "Meowscarada EX", "151", "Ultra Rare", "151-193"))
-        originalDataList.add(DataClass(2, imgURL, "Pikachu", "Base Set", "Rare", "58-102"))
-        originalDataList.add(DataClass(3, imgURL, "Charizard", "Base Set", "Rare Holo", "6-102"))
-        originalDataList.add(DataClass(4, imgURL, "Blastoise", "Base Set", "Rare Holo", "2-102"))
-    }
+                            // Convert API models to DataClass
+                            val mappedCards = cards.map {
+                                DataClass(
+                                    it.id,
+                                    it.image_url,
+                                    it.name,
+                                    "Paldea Evolved", // Or use real set name if available
+                                    it.rarity,
+                                    it.code
+                                )
+                            }
+                            // Populate original list for filtering
+                            originalDataList.clear()
+                            originalDataList.addAll(mappedCards)
 
-    private fun filterResults(query: String) {
-        dataList.clear()
-        if (query.isNotEmpty()) {
-            for (item in originalDataList) {
-                if (item.dataCardName.contains(query, ignoreCase = true)) {
-                    dataList.add(item)
+                            // Copy all to dataList (visible list)
+                            dataList.clear()
+                            dataList.addAll(originalDataList)
+
+                            adapter.notifyDataSetChanged()
+                        }
+
+                        is ApiResult.Loading -> {
+                            // Optional: Show loading spinner
+                        }
+
+                        is ApiResult.Error -> {
+                            Log.e("SearchFragment", "Error: ${result.message}")
+                        }
+
+                        null -> Unit
+                    }
                 }
             }
         }
-        adapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
