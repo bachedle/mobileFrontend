@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@android:color/transparent"
-    card_view:cardCornerRadius="0dp"
+    card_view:cardCornerRadius="10dp"
     card_view:cardElevation="0dp">
 
     <ImageView

@@ -19,7 +19,9 @@ class SimulatorMain : Fragment() {
     private val cardSets = listOf(
         SetDataClass("Journey Together", R.drawable.journey_together),
         SetDataClass("Paldea Evolved", R.drawable.paldea_evolved),
-        SetDataClass("Twilight Masquerade", R.drawable.twilight_masquerade)
+        SetDataClass("Surging Sparks", R.drawable.surging_sparks),
+        SetDataClass("Prismatic Evolution", R.drawable.prismatic_evolution)
+
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

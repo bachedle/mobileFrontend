@@ -1,5 +1,6 @@
 package com.example.mobilefrontend
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,12 @@ class Signup : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        //background animation
+//        val animationDrawable = binding.root.background as AnimationDrawable
+//        animationDrawable.setEnterFadeDuration(500)
+//        animationDrawable.setExitFadeDuration(500)
+//        animationDrawable.start()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

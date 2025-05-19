@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+
+    <item android:drawable="@drawable/ball1" android:duration="500" />
+    <item android:drawable="@drawable/ball2" android:duration="500" />
+    <item android:drawable="@drawable/ball3" android:duration="500" />
+    <item android:drawable="@drawable/ball4" android:duration="500" />
+    <item android:drawable="@drawable/ball5" android:duration="500" />
+    <item android:drawable="@drawable/ball6" android:duration="500" />
+    <item android:drawable="@drawable/ball7" android:duration="500" />
+    <item android:drawable="@drawable/ball8" android:duration="500" />
+    <item android:drawable="@drawable/ball9" android:duration="500" />
+    <item android:drawable="@drawable/ball10" android:duration="500" />
+    <item android:drawable="@drawable/ball11" android:duration="500" />
+    <item android:drawable="@drawable/ball12" android:duration="500" />
+    <item android:drawable="@drawable/ball13" android:duration="500" />
+    <item android:drawable="@drawable/ball14" android:duration="500" />
+    <item android:drawable="@drawable/ball15" android:duration="500" />
+    <item android:drawable="@drawable/ball16" android:duration="500" />
+    <item android:drawable="@drawable/ball17" android:duration="500" />
+    <item android:drawable="@drawable/ball18" android:duration="500" />
+    <item android:drawable="@drawable/ball19" android:duration="500" />
+    <item android:drawable="@drawable/ball20" android:duration="500" />
+    <item android:drawable="@drawable/ball21" android:duration="500" />
+    <item android:drawable="@drawable/ball22" android:duration="500" />
+    <item android:drawable="@drawable/ball23" android:duration="500" />
+    <item android:drawable="@drawable/ball24" android:duration="500" />
+    <item android:drawable="@drawable/ball25" android:duration="500" />
+    <item android:drawable="@drawable/ball26" android:duration="500" />
+    <item android:drawable="@drawable/ball27" android:duration="500" />
+    <item android:drawable="@drawable/ball28" android:duration="500" />
+    <item android:drawable="@drawable/ball29" android:duration="500" />
+    <item android:drawable="@drawable/ball30" android:duration="500" />
+    <item android:drawable="@drawable/ball31" android:duration="500" />
+    <item android:drawable="@drawable/ball32" android:duration="500" />
+
+</animation-list>
