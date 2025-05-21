@@ -23,14 +23,12 @@ class CardViewModel: ViewModel() {
     private val _userCollectionState = MutableStateFlow<ApiResult<List<Collection>>?>(null)
     val userCollectionState: StateFlow<ApiResult<List<Collection>>?> = _userCollectionState
 
-    fun getCards() {
+    fun getCards(keyword: String? = null, rarity: String? = null) {
         viewModelScope.launch {
             toResultFlow {
-                RetrofitService.get().getCards() // Response<ApiResponse<List<Card>>>
+                RetrofitService.get().getCards(keyword, rarity)
             }.collect { result ->
                 Log.d("CardViewModel", "Result: $result")
-
-                // No need to re-wrap result.data — just pass it along
                 _cardState.value = result
             }
         }

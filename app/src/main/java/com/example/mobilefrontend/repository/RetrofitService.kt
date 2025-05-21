@@ -17,7 +17,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
-
+import retrofit2.http.Query
 
 interface RetrofitService {
 
@@ -33,8 +33,11 @@ interface RetrofitService {
     suspend fun getUserProfile(): Response<ApiResponse<UserProfile>>
 
     //Cards
-    @GET("/v1/api/cards/")
-    suspend fun getCards(): Response<ApiResponse<List<Card>>>
+        @GET("/v1/api/cards/")
+        suspend fun getCards(
+            @Query("keyword") keyword: String?,
+            @Query("rarity") rarity: String?
+        ): Response<ApiResponse<List<Card>>>
 
     @POST("/v1/api/collections")
     suspend fun addCardToCollection(@Body request: AddCardToCollectionRequest): Response<ApiResponse<Collection>>
@@ -43,7 +46,7 @@ interface RetrofitService {
     suspend fun getCollectionByUserId(@Path("userId") userId: Int): Response<ApiResponse<List<Collection>>>
 
     companion object {
-        private const val BASE_URL = "https://yourrlove.com"
+        private const val BASE_URL = "https://yourrlove.com/"
 
         @Volatile
         private var instance: RetrofitService? = null
