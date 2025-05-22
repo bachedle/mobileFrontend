@@ -43,6 +43,8 @@ class Simulator : Fragment() {
 
         cardStackView = binding.cardStackView
 
+        val args = SimulatorArgs.fromBundle(requireArguments())
+        val series = args.setName
 
 
         manager = CardStackLayoutManager(requireContext(), object : CardStackListener {

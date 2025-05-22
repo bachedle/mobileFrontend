@@ -23,6 +23,9 @@ class CardViewModel: ViewModel() {
     private val _userCollectionState = MutableStateFlow<ApiResult<List<Collection>>?>(null)
     val userCollectionState: StateFlow<ApiResult<List<Collection>>?> = _userCollectionState
 
+    private val _randomCardsState = MutableStateFlow<ApiResult<List<Card>>?>(null)
+    val randomCardsState: StateFlow<ApiResult<List<Collection>>?> = _randomCardsState
+
     fun getCards() {
         viewModelScope.launch {
             toResultFlow {
@@ -63,6 +66,17 @@ class CardViewModel: ViewModel() {
         }
     }
 
+    fun getRandomCards(series: String) {
+        viewModelScope.launch {
+            toResultFlow {
+                RetrofitService.get().getRandomCards(series)
+            }.collect { result ->
+                _randomCardsState.value = result
+                Log.d("CardViewModel", "Random cards result: $result")
+            }
+        }
+    }
+    
     fun resetUserCollectionState() {
         _userCollectionState.value = null
         Log.d("CardViewModel", "Reset user collection state")

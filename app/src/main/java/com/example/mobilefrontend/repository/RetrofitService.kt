@@ -17,6 +17,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface RetrofitService {
@@ -41,6 +42,9 @@ interface RetrofitService {
 
     @GET("/v1/api/collections/users/{userId}")
     suspend fun getCollectionByUserId(@Path("userId") userId: Int): Response<ApiResponse<List<Collection>>>
+
+    @GET("v1/api/cards/random")
+    suspend fun getRandomCards(@Query("series") series: String): Response<ApiResponse<List<Card>>>
 
     companion object {
         private const val BASE_URL = "https://yourrlove.com"

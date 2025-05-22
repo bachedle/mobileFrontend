@@ -3,12 +3,19 @@ package com.example.mobilefrontend.itemSimulator.SimulatorCard
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.mobilefrontend.R
 import com.example.mobilefrontend.databinding.SimulatorLayoutBinding
-import com.example.mobilefrontend.itemSimulator.SimulatorCard.SimulatorDataClass
 
-class SimulatorAdapterClass(private val cardList: List<SimulatorDataClass>) : RecyclerView.Adapter<SimulatorAdapterClass.CardViewHolder>() {
+data class SimulatorDataClass(
+    val imageResId: Int
+)
 
-    inner class CardViewHolder(val binding: SimulatorLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+class SimulatorAdapterClass(private val cardList: List<SimulatorDataClass>) :
+    RecyclerView.Adapter<SimulatorAdapterClass.CardViewHolder>() {
+
+    inner class CardViewHolder(val binding: SimulatorLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -18,10 +25,13 @@ class SimulatorAdapterClass(private val cardList: List<SimulatorDataClass>) : Re
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val card = cardList[position]
-        holder.binding.cardImage.setImageResource(card.imageResId)
+        // Load image using Glide with the resource ID from our data class.
+        Glide.with(holder.itemView.context)
+            .load(card.imageResId)
+            .placeholder(R.drawable.samplecard)  // optional fallback image
+            .error(R.drawable.samplecard)        // optional error image
+            .into(holder.binding.cardImage)           // ensure ivCard matches your ImageView ID in the layout
     }
 
-    override fun getItemCount(): Int {
-        return cardList.size
-    }
+    override fun getItemCount(): Int = cardList.size
 }
