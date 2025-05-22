@@ -7,9 +7,6 @@ import com.bumptech.glide.Glide
 import com.example.mobilefrontend.R
 import com.example.mobilefrontend.databinding.SimulatorLayoutBinding
 
-data class SimulatorDataClass(
-    val imageResId: Int
-)
 
 class SimulatorAdapterClass(private val cardList: List<SimulatorDataClass>) :
     RecyclerView.Adapter<SimulatorAdapterClass.CardViewHolder>() {
