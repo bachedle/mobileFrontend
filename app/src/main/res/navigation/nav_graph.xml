@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_home_to_card_detail"
             app:destination="@id/llCardDetailsRoot" />
+        <action
+            android:id="@+id/action_home_to_collection"
+            app:destination="@id/collection" />
     </fragment>
 
     <fragment

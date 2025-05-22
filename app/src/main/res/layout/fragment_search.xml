@@ -1,30 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Search">
 
-    <!-- Search Header -->
-    <TextView
-        android:id="@+id/tvSearchHeader"
+    <!-- Header Container with Back Button and Centered "Search" Title -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:padding="16dp"
-        android:background="#FFFFFF" />
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/returnBtn"
+            style="@style/ReturnButtonStyle"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSearchHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Modern Search Bar -->
     <LinearLayout
         android:id="@+id/searchBarLayout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginTop="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/bg_search_bar"
         android:elevation="4dp"
         android:orientation="horizontal"
@@ -58,14 +82,15 @@
             android:layout_height="32dp"
             android:contentDescription="Search"
             android:src="@android:drawable/ic_menu_search"
-            app:tint="#000000" />
+            app:tint="@color/black" />
     </LinearLayout>
 
     <!-- Card List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCardList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="140dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
         android:padding="4dp" />
-</FrameLayout>
+</LinearLayout>

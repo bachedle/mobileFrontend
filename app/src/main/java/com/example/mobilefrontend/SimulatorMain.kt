@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mobilefrontend.databinding.FragmentSimulatorMainBinding
@@ -19,7 +20,7 @@ class SimulatorMain : Fragment() {
     private val cardSets = listOf(
         SetDataClass("Journey Together", R.drawable.journey_together),
         SetDataClass("Paldea Evolved", R.drawable.paldea_evolved),
-        SetDataClass("Surging Sparks", R.drawable.surging_sparks),
+        SetDataClass("Surging Sparks", R.drawable.twilight_masquerade),
         SetDataClass("Prismatic Evolution", R.drawable.prismatic_evolution)
 
     )
@@ -44,6 +45,12 @@ class SimulatorMain : Fragment() {
             val scale = 0.85f + (1 - kotlin.math.abs(position)) * 0.15f
             page.scaleX = scale
             page.scaleY = scale
+        }
+
+        //nut return
+        val returnButton = view.findViewById<Button>(R.id.returnBtn)
+        returnButton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         viewPager.setCurrentItem(Int.MAX_VALUE / 2, false)

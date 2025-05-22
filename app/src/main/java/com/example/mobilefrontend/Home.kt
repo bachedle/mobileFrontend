@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.lifecycle.Lifecycle
@@ -63,6 +64,15 @@ class Home : Fragment() {
             findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
+
+
+        //add nut de nhay qua collection o trang home
+        val collectionButton = view.findViewById<Button>(R.id.collectionTextBtn)
+
+        collectionButton.setOnClickListener {
+            //thay id trong action cc gi do
+            findNavController().navigate(HomeDirections.actionHomeToCollection(3))
+        }
 
         observeCardState()
 

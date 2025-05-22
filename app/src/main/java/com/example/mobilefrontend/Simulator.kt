@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.mobilefrontend.databinding.FragmentSimulatorBinding
 import com.yuyakaido.android.cardstackview.*
 import com.example.mobilefrontend.itemSimulator.SimulatorCard.SimulatorAdapterClass
@@ -26,12 +28,22 @@ class Simulator : Fragment() {
     ): View {
         _binding = FragmentSimulatorBinding.inflate(inflater, container, false)
         return binding.root
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //nut return
+        binding.returnBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.returnBtn.bringToFront()
+
         cardStackView = binding.cardStackView
+
+
 
         manager = CardStackLayoutManager(requireContext(), object : CardStackListener {
             override fun onCardDragging(direction: Direction?, ratio: Float) {}
@@ -55,6 +67,7 @@ class Simulator : Fragment() {
         manager.setScaleInterval(0.95f)
 
         setupCardStack()
+
     }
 
     private fun setupCardStack() {

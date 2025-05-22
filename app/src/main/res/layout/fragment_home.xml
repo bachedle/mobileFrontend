@@ -62,54 +62,49 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <!-- New in Collections -->
-            <TextView
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New in Collections"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginBottom="8dp" />
+                android:orientation="horizontal"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New in Collections"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Spacer View to push the second TextView to the right -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/collectionTextBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To Collection"
+                    android:textSize="10sp"
+
+                    android:padding="8dp" />
+            </LinearLayout>
+
+
 
             <!-- Cards RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="118dp"
+                android:layout_height="227dp"
                 android:layout_marginBottom="16dp"
                 android:nestedScrollingEnabled="false" />
 
-            <!-- Progress section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Current set"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp" />
 
-            <!-- Example progress -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="40dp" />
-
-                <ProgressBar
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="10dp"
-                    android:progress="60"
-                    android:max="100"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_marginStart="8dp" />
-            </LinearLayout>
 
         </LinearLayout>
 

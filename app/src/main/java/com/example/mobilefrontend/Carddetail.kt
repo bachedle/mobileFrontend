@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.mobilefrontend.databinding.FragmentCarddetailBinding
 import com.example.mobilefrontend.model.AddCardToCollectionRequest
@@ -72,6 +74,12 @@ class CardDetails : Fragment() {
             val payload = AddCardToCollectionRequest(user_id = 3, card_id = dataId)
             cardModel.addToCollection(payload)
             it.isEnabled = false
+        }
+
+        //nut return
+        val returnButton = view.findViewById<Button>(R.id.returnBtn)
+        returnButton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
 

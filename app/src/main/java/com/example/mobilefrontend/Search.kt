@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
@@ -42,6 +43,12 @@ class Search : Fragment() {
             findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
+
+        //nut return
+        val returnButton = view.findViewById<Button>(R.id.returnBtn)
+        returnButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         // Load sample data simulating backend response
         loadSampleData()

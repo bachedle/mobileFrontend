@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -53,6 +54,12 @@ class Collection : Fragment() {
             findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
+
+        //nut return
+        val returnButton = view.findViewById<Button>(R.id.returnBtn)
+        returnButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         observeCardState()
         cardModel.getUserCollection(userId = userId)

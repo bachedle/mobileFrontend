@@ -1,0 +1,17 @@
+<!-- res/drawable/button_back.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Pressed State -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/black" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+    <!-- Default State -->
+    <item>
+        <shape>
+            <solid android:color="@color/black" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+</selector>

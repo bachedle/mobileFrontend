@@ -7,4 +7,20 @@
         <item name="android:progressDrawable">@drawable/progress_drawable</item>
     </style>
 
+    <style name="ReturnButtonStyle">
+        <item name="android:background">@drawable/button_back</item>
+        <item name="android:textColor">@color/white</item>
+        <!-- Increase the textSize to make it a bit bigger -->
+        <!-- Make the text bold -->
+        <item name="android:textStyle">bold</item>
+        <!-- Center both the text and drawable inside the button -->
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <!-- Icon on the left with proper spacing -->
+        <item name="android:drawableLeft">@drawable/baseline_arrow_back_ios_24</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>
+
+
+
 </resources>
