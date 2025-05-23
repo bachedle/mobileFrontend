@@ -41,7 +41,7 @@ class Collection : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        adapter = AdapterClass(arrayListOf()) { selectedCard ->
+        adapter = AdapterClass(arrayListOf(), isGrid = true) { selectedCard ->
             val action = CollectionDirections.actionCollectionToCardDetail(
                 selectedCard.dataId,
                 selectedCard.dataImage,

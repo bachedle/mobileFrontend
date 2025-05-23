@@ -26,7 +26,6 @@ class CardViewModel: ViewModel() {
     private val _randomCardsState = MutableStateFlow<ApiResult<List<Card>>?>(null)
     val randomCardsState: StateFlow<ApiResult<List<Card>>?> = _randomCardsState
 
-    fun getCards() {
         fun getCards(keyword: String? = null, rarity: String? = null) {
             viewModelScope.launch {
                 toResultFlow {
@@ -37,7 +36,6 @@ class CardViewModel: ViewModel() {
                 }
             }
         }
-
         fun addToCollection(payload: AddCardToCollectionRequest) {
             viewModelScope.launch {
                 toResultFlow {
@@ -80,5 +78,5 @@ class CardViewModel: ViewModel() {
             _userCollectionState.value = null
             Log.d("CardViewModel", "Reset user collection state")
         }
-    }
+
 }

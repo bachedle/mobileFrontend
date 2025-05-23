@@ -22,7 +22,6 @@ class SimulatorMain : Fragment() {
         SetDataClass("Paldea Evolved", R.drawable.paldea_evolved),
         SetDataClass("Surging Sparks", R.drawable.twilight_masquerade),
         SetDataClass("Prismatic Evolution", R.drawable.prismatic_evolution)
-
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

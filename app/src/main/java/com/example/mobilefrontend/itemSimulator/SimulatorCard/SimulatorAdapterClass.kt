@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mobilefrontend.R
 import com.example.mobilefrontend.databinding.SimulatorLayoutBinding
+import com.example.mobilefrontend.itemCard.DataClass
 
 
-class SimulatorAdapterClass(private val cardList: List<SimulatorDataClass>) :
+class SimulatorAdapterClass(
+    private val cardList: ArrayList<SimulatorDataClass>) :
     RecyclerView.Adapter<SimulatorAdapterClass.CardViewHolder>() {
 
     inner class CardViewHolder(val binding: SimulatorLayoutBinding) :
@@ -24,11 +26,17 @@ class SimulatorAdapterClass(private val cardList: List<SimulatorDataClass>) :
         val card = cardList[position]
         // Load image using Glide with the resource ID from our data class.
         Glide.with(holder.itemView.context)
-            .load(card.imageResId)
+            .load(card.image_url)
             .placeholder(R.drawable.samplecard)  // optional fallback image
             .error(R.drawable.samplecard)        // optional error image
             .into(holder.binding.cardImage)           // ensure ivCard matches your ImageView ID in the layout
     }
 
     override fun getItemCount(): Int = cardList.size
+
+    fun updateData(newData: List<SimulatorDataClass>) {
+        cardList.clear()
+        cardList.addAll(newData)
+        notifyDataSetChanged()
+    }
 }
