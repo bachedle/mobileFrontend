@@ -27,58 +27,58 @@ class CardViewModel: ViewModel() {
     val randomCardsState: StateFlow<ApiResult<List<Card>>?> = _randomCardsState
 
     fun getCards() {
-        viewModelScope.launch {
-            toResultFlow {
-                RetrofitService.get().getCards() // Response<ApiResponse<List<Card>>>
-            }.collect { result ->
-                Log.d("CardViewModel", "Result: $result")
-
-                // No need to re-wrap result.data — just pass it along
-                _cardState.value = result
+        fun getCards(keyword: String? = null, rarity: String? = null) {
+            viewModelScope.launch {
+                toResultFlow {
+                    RetrofitService.get().getCards(keyword, rarity)
+                }.collect { result ->
+                    Log.d("CardViewModel", "Result: $result")
+                    _cardState.value = result
+                }
             }
         }
-    }
 
-    fun addToCollection(payload: AddCardToCollectionRequest) {
-        viewModelScope.launch {
-            toResultFlow {
-                RetrofitService.get().addCardToCollection(payload)
-            }.collect { result ->
-                _collectionState.value = result
-                Log.d("CardViewModel", "Result: $result")
+        fun addToCollection(payload: AddCardToCollectionRequest) {
+            viewModelScope.launch {
+                toResultFlow {
+                    RetrofitService.get().addCardToCollection(payload)
+                }.collect { result ->
+                    _collectionState.value = result
+                    Log.d("CardViewModel", "Result: $result")
+                }
             }
         }
-    }
 
-    fun resetCollectionState() {
-        _collectionState.value = null
-        Log.d("CardViewModel", "Reset collection state")
-    }
+        fun resetCollectionState() {
+            _collectionState.value = null
+            Log.d("CardViewModel", "Reset collection state")
+        }
 
-    fun getUserCollection(userId: Int) {
-        viewModelScope.launch {
-            toResultFlow {
-                RetrofitService.get().getCollectionByUserId(userId)
-            }.collect { result ->
-                _userCollectionState.value = result
-                Log.d("CardViewModel", "User collection result: $result")
+        fun getUserCollection(userId: Int) {
+            viewModelScope.launch {
+                toResultFlow {
+                    RetrofitService.get().getCollectionByUserId(userId)
+                }.collect { result ->
+                    _userCollectionState.value = result
+                    Log.d("CardViewModel", "User collection result: $result")
+                }
             }
         }
-    }
 
-    fun getRandomCards(series: String) {
-        viewModelScope.launch {
-            toResultFlow {
-                RetrofitService.get().getRandomCards(series)
-            }.collect { result ->
-                _randomCardsState.value = result
-                Log.d("CardViewModel", "Random cards result: $result")
+        fun getRandomCards(series: String) {
+            viewModelScope.launch {
+                toResultFlow {
+                    RetrofitService.get().getRandomCards(series)
+                }.collect { result ->
+                    _randomCardsState.value = result
+                    Log.d("CardViewModel", "Random cards result: $result")
+                }
             }
         }
-    }
 
-    fun resetUserCollectionState() {
-        _userCollectionState.value = null
-        Log.d("CardViewModel", "Reset user collection state")
+        fun resetUserCollectionState() {
+            _userCollectionState.value = null
+            Log.d("CardViewModel", "Reset user collection state")
+        }
     }
 }
