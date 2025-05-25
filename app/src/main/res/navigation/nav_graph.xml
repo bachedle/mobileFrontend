@@ -52,6 +52,16 @@
         <action
             android:id="@+id/action_search_to_card_detail"
             app:destination="@id/llCardDetailsRoot" />
+        <action
+            android:id="@+id/action_search_to_image_search"
+            app:destination="@id/nav_image_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_image_search"
+        android:name="com.example.mobilefrontend.ImageSearch"
+        tools:layout="@layout/fragment_image_search"
+        android:label="ImageSearchFragment">
     </fragment>
 
     <fragment

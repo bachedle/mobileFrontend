@@ -79,10 +79,12 @@ class Search : Fragment() {
             cardModel.getCards(keyword = query)
         }
 
-        // Example camera button if needed
-//        binding.ivCamera.setOnClickListener {
-//            cardModel.getCards(keyword = "Meowscarada")
-//        }
+        // Camera button navigation to ImageSearch fragment
+        binding.ivCamera.setOnClickListener {
+            val action = SearchDirections.actionSearchToImageSearch()
+            findNavController().navigate(action)
+        }
+
     }
 
 

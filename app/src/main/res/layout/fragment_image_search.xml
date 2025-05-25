@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Full-screen Camera Preview -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Custom overlay for framing -->
+    <com.example.mobilefrontend.FrameOverlayView
+        android:id="@+id/overlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="120dp" />
+
+    <!-- Top Bar: Back Button and Adjacent Text -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/returnBtn"
+            style="@style/ReturnButtonStyle"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        <TextView
+            android:id="@+id/topText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Align the card into the frame"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="14dp"/>
+    </LinearLayout>
+
+    <!-- Bottom Control Panel with Black Background -->
+    <LinearLayout
+        android:id="@+id/bottomPanel"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="bottom"
+        android:background="#FF000000"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <!-- Gallery Access Button at the left -->
+        <Button
+            android:id="@+id/galleryButton"
+            android:layout_width="62dp"
+            android:layout_height="64dp"
+            android:background="@drawable/circular_background"
+            android:clipToOutline="true"
+            android:contentDescription="Access Gallery"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <!-- Spacer to center the camera button -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6" />
+
+        <!-- Camera Capture Button placed in the bottom panel center -->
+        <ImageButton
+            android:id="@+id/cameraCaptureButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/circular_background"
+            android:src="@android:drawable/ic_menu_camera"
+            android:contentDescription="Capture Photo"
+            android:layout_gravity="center"
+            android:clipToOutline="true" />
+
+        <!-- Spacer to balance the layout -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -108,4 +108,19 @@ dependencies {
     implementation(libs.koin.android)
     implementation("androidx.viewpager2:viewpager2:1.1.0")
 
+
+
+    //camera X
+    implementation ("androidx.camera:camera-core:1.4.2")
+    implementation ("androidx.camera:camera-camera2:1.4.2")
+    implementation ("androidx.camera:camera-lifecycle:1.4.2")
+    implementation ("androidx.camera:camera-view:1.4.2")
+    implementation ("androidx.camera:camera-video:1.4.2")
+    implementation ("androidx.camera:camera-extensions:1.4.2")
+
+
+    implementation ("androidx.compose.material:material-icons-extended:1.7.8")
+
+    implementation ("org.opencv:opencv:4.9.0")
+
 }
