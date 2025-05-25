@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -183,12 +184,14 @@ class ImageSearch : Fragment() {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
 
-    // Helper: Returns an output directory for saved photos
+    // Helper: Returns an output directory in the phone's Downloads folder for saved photos
     private fun getOutputDirectory(): File {
-        val mediaDir = requireContext().externalMediaDirs.firstOrNull()?.let {
-            File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
+        // This method uses the public Downloads directory. (For Android 10+, consider using MediaStore.)
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        if (!downloadsDir.exists()) {
+            downloadsDir.mkdirs()
         }
-        return if (mediaDir != null && mediaDir.exists()) mediaDir else requireContext().filesDir
+        return downloadsDir
     }
 
     // Handle permission results

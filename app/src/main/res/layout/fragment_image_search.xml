@@ -18,7 +18,7 @@
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="120dp" />
+        android:layout_marginBottom="60dp" />
 
     <!-- Top Bar: Back Button and Adjacent Text -->
     <LinearLayout

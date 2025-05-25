@@ -23,8 +23,8 @@ class FrameOverlayView @JvmOverloads constructor(
         super.onDraw(canvas)
 
         // Compute a centered rectangle
-        val frameWidth = width * 0.8f
-        val frameHeight = frameWidth * 0.6f // Aspect ratio of 0.6 (e.g., for a card)
+        val frameWidth = width * 0.6f
+        val frameHeight = frameWidth * (8.8f / 6.3f) // approx frameWidth * 1.4 for a vertical card
         val left = (width - frameWidth) / 2
         val top = (height - frameHeight) / 2
         val right = left + frameWidth
