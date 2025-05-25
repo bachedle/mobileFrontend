@@ -62,6 +62,9 @@
         android:name="com.example.mobilefrontend.ImageSearch"
         tools:layout="@layout/fragment_image_search"
         android:label="ImageSearchFragment">
+        <action
+            android:id="@+id/action_nav_image_search_to_llCardDetailsRoot"
+            app:destination="@id/llCardDetailsRoot" />
     </fragment>
 
     <fragment

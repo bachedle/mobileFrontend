@@ -19,10 +19,11 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mobilefrontend.databinding.FragmentImageSearchBinding
-import com.example.mobilefrontend.viewmodels.CardViewModel
+import com.example.mobilefrontend.itemCard.AdapterClass
+import com.example.mobilefrontend.itemCard.DataClass
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -33,11 +34,10 @@ class ImageSearch : Fragment() {
     private var _binding: FragmentImageSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val cardModel: CardViewModel by viewModel()
-
-    // CameraX variables
-    private var imageCapture: ImageCapture? = null
+    private lateinit var adapter: AdapterClass
+    private val dataList = ArrayList<DataClass>()
     private lateinit var cameraExecutor: ExecutorService
+    private var imageCapture: ImageCapture? = null
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     private val REQUEST_CODE_PERMISSIONS = 10
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
@@ -57,6 +57,28 @@ class ImageSearch : Fragment() {
         hideBottomNavigation()
         hideSystemBars()
 
+        // Setup RecyclerView
+        binding.rvCardList.layoutManager = LinearLayoutManager(context)
+        binding.rvCardList.setHasFixedSize(true)
+
+        // Initialize adapter (set isGrid to false for list mode, true for grid mode)
+        adapter = AdapterClass(dataList, isGrid = false) { selectedCard ->
+            val action = SearchDirections.actionSearchToCardDetail(
+                selectedCard.dataId,
+                selectedCard.dataImage,
+                selectedCard.dataCardName,
+                selectedCard.dataCardSet,
+                selectedCard.dataCardRarity,
+                selectedCard.dataCardCode,
+                false
+            )
+            findNavController().navigate(action)
+        }
+        binding.rvCardList.adapter = adapter
+
+        // Load local sample data (single item)
+        loadSampleData()
+
         // Return button to navigate back
         binding.returnBtn.setOnClickListener {
             findNavController().popBackStack()
@@ -74,7 +96,7 @@ class ImageSearch : Fragment() {
             takePhoto()
         }
 
-        // Gallery button (optional, if you want to implement gallery selection)
+        // Gallery button
         binding.galleryButton.setOnClickListener {
             Toast.makeText(requireContext(), "Gallery selection not implemented", Toast.LENGTH_SHORT).show()
         }
@@ -83,45 +105,49 @@ class ImageSearch : Fragment() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
-    /**
-     * Hide the BottomNavigationView
-     */
+    private fun loadSampleData() {
+        // Clear existing data
+        dataList.clear()
+
+        // Add a single DataClass object
+        dataList.add(
+            DataClass(
+                dataId = 1,
+                dataImage = "R.drawable.samplecard", // Use drawable resource
+                dataCardName = "Meowscarada",
+                dataCardSet = "Paldea Evolved",
+                dataCardRarity = "Rare",
+                dataCardCode = "PAL-001"
+            )
+        )
+
+        // Notify adapter of data change
+        adapter.notifyDataSetChanged()
+    }
+
     private fun hideBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView?.visibility = View.GONE
     }
 
-    /**
-     * Show the BottomNavigationView
-     */
     private fun showBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView?.visibility = View.VISIBLE
     }
 
-    /**
-     * Start the CameraX preview.
-     */
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
-
-            // Configure the preview use case with a target aspect ratio
             val preview = Preview.Builder()
                 .setTargetAspectRatio(androidx.camera.core.AspectRatio.RATIO_4_3)
                 .build().also {
                     it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                 }
-
-            // Initialize ImageCapture for taking photos
             imageCapture = ImageCapture.Builder()
                 .setTargetAspectRatio(androidx.camera.core.AspectRatio.RATIO_4_3)
                 .build()
-
-            // Select the default back camera
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
@@ -137,19 +163,13 @@ class ImageSearch : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
-    /**
-     * Capture an image with CameraX.
-     */
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
-
-        // Create an output file with a time-stamped name
         val photoFile = File(
             getOutputDirectory(),
             SimpleDateFormat(FILENAME_FORMAT, Locale.US)
                 .format(System.currentTimeMillis()) + ".jpg"
         )
-
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         imageCapture.takePicture(
             outputOptions,
@@ -164,31 +184,14 @@ class ImageSearch : Fragment() {
                     val savedPath = photoFile.absolutePath
                     Toast.makeText(requireContext(), "Photo captured: $savedPath", Toast.LENGTH_SHORT).show()
                     Log.d("ImageSearch", "Photo saved at: $savedPath")
-
-                    // Trigger image search with the captured image
-                    performImageSearch(savedPath)
+                    // For testing, reload sample data
+                    loadSampleData()
                 }
             }
         )
     }
 
-    /**
-     * Perform an image search using the captured image.
-     */
-    private fun performImageSearch(imagePath: String) {
-        val imageFile = File(imagePath)
-        cardModel.getCards(keyword = "Meowscarada") // Placeholder
-        findNavController().popBackStack()
-    }
-
-    // Helper: Check whether camera permission has been granted
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }
-
-    // Helper: Returns an output directory in the phone's Downloads folder for saved photos
     private fun getOutputDirectory(): File {
-        // This method uses the public Downloads directory. (For Android 10+, consider using MediaStore.)
         val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         if (!downloadsDir.exists()) {
             downloadsDir.mkdirs()
@@ -196,7 +199,10 @@ class ImageSearch : Fragment() {
         return downloadsDir
     }
 
-    // Handle permission results
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
@@ -211,9 +217,6 @@ class ImageSearch : Fragment() {
         }
     }
 
-    /**
-     * Hide the system bars for an immersive experience.
-     */
     private fun hideSystemBars() {
         val window = requireActivity().window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -234,9 +237,6 @@ class ImageSearch : Fragment() {
         }
     }
 
-    /**
-     * Restore the system bars and BottomNavigationView.
-     */
     private fun showSystemBars() {
         val window = requireActivity().window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -253,7 +253,6 @@ class ImageSearch : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Restore the system bars and bottom navigation
         showSystemBars()
         showBottomNavigation()
         cameraExecutor.shutdown()

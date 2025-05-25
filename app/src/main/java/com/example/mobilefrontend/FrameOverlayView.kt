@@ -13,7 +13,7 @@ class FrameOverlayView @JvmOverloads constructor(
 ) : View(context, attrs) {
 
     private val paint = Paint().apply {
-        color = Color.WHITE      // The color of the frame
+        color = Color.BLACK      // The color of the frame
         style = Paint.Style.STROKE
         strokeWidth = 5f         // Thickness of the frame
         isAntiAlias = true
@@ -23,7 +23,7 @@ class FrameOverlayView @JvmOverloads constructor(
         super.onDraw(canvas)
 
         // Compute a centered rectangle
-        val frameWidth = width * 1f
+        val frameWidth = width * 0.7f
         val frameHeight = frameWidth * (8.8f / 6.3f) // approx frameWidth * 1.4 for a vertical card
         val left = (width - frameWidth) / 2
         val top = (height - frameHeight) / 2
