@@ -9,6 +9,7 @@
 
     <!-- Full-screen Camera Preview -->
     <androidx.camera.view.PreviewView
+        app:scaleType="fitCenter"
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -18,7 +19,7 @@
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="60dp" />
+        android:layout_margin="80dp" />
 
     <!-- Top Bar: Back Button and Adjacent Text -->
     <LinearLayout
@@ -28,14 +29,12 @@
         android:layout_gravity="top"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:background="@color/white"
         android:gravity="center_vertical">
         <Button
             android:id="@+id/returnBtn"
             style="@style/ReturnButtonStyle"
             android:layout_width="46dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -47,7 +46,7 @@
             android:textStyle="bold"
             android:layout_gravity="center"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_marginStart="14dp"/>
     </LinearLayout>
 

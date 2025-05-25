@@ -107,22 +107,23 @@ class ImageSearch : Fragment() {
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
 
-            // Configure the preview use case
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-            }
+            // Configure the preview use case with a target aspect ratio
+            val preview = Preview.Builder()
+                .setTargetAspectRatio(androidx.camera.core.AspectRatio.RATIO_4_3)
+                .build().also {
+                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                }
 
             // Initialize ImageCapture for taking photos
-            imageCapture = ImageCapture.Builder().build()
+            imageCapture = ImageCapture.Builder()
+                .setTargetAspectRatio(androidx.camera.core.AspectRatio.RATIO_4_3)
+                .build()
 
             // Select the default back camera
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
-                // Unbind any previous use cases before binding
                 cameraProvider.unbindAll()
-
-                // Bind the preview and capture use cases to the lifecycle
                 cameraProvider.bindToLifecycle(
                     viewLifecycleOwner,
                     cameraSelector,
@@ -175,6 +176,7 @@ class ImageSearch : Fragment() {
      * Perform an image search using the captured image.
      */
     private fun performImageSearch(imagePath: String) {
+        val imageFile = File(imagePath)
         cardModel.getCards(keyword = "Meowscarada") // Placeholder
         findNavController().popBackStack()
     }
