@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 class FrameOverlayView @JvmOverloads constructor(
@@ -30,6 +31,7 @@ class FrameOverlayView @JvmOverloads constructor(
         val right = left + frameWidth
         val bottom = top + frameHeight
 
+        Log.d("Rectangle", "${left} , ${top}, ${right}, ${bottom}")
         // Draw the rectangle
         canvas.drawRect(left, top, right, bottom, paint)
 

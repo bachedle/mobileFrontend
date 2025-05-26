@@ -34,7 +34,7 @@ class Search : Fragment() {
     private lateinit var adapter: AdapterClass
     private val dataList = ArrayList<DataClass>()
     private val originalDataList = ArrayList<DataClass>()
-    private val cardModel: CardViewModel by activityViewModels()
+    private val cardModel: CardViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
