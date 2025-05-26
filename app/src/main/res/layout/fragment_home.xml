@@ -88,10 +88,11 @@
                     android:id="@+id/collectionTextBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="To Collection"
                     android:textSize="10sp"
 
-                    android:padding="8dp" />
+                    android:padding="0dp" />
             </LinearLayout>
 
 
@@ -100,7 +101,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="227dp"
+                android:layout_height="438dp"
                 android:layout_marginBottom="16dp"
                 android:nestedScrollingEnabled="false" />
 

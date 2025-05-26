@@ -6,6 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <!-- Top Bar: Back Button and Instruction Text -->
@@ -72,7 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Search Result RecyclerView — note: no constraint attributes here -->
+        <!-- Search Result RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCardList"
             android:layout_width="match_parent"

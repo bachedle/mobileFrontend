@@ -1,7 +1,9 @@
 package com.example.mobilefrontend
 
 import android.Manifest
+import android.app.Dialog // 🔧 added
 import android.content.pm.PackageManager
+import android.graphics.drawable.AnimationDrawable // 🔧 added
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -9,7 +11,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.widget.ImageView // 🔧 added
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -42,6 +46,9 @@ class ImageSearch : Fragment() {
     private val REQUEST_CODE_PERMISSIONS = 10
     private val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
+    // 🔧 Loading dialog reference
+    private var loadingDialog: Dialog? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,15 +60,12 @@ class ImageSearch : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Hide the bottom navigation bar and system bars
         hideBottomNavigation()
         hideSystemBars()
 
-        // Setup RecyclerView
         binding.rvCardList.layoutManager = LinearLayoutManager(context)
         binding.rvCardList.setHasFixedSize(true)
 
-        // Initialize adapter (set isGrid to false for list mode, true for grid mode)
         adapter = AdapterClass(dataList, isGrid = false) { selectedCard ->
             val action = SearchDirections.actionSearchToCardDetail(
                 selectedCard.dataId,
@@ -76,52 +80,41 @@ class ImageSearch : Fragment() {
         }
         binding.rvCardList.adapter = adapter
 
-        // Load local sample data (single item)
         loadSampleData()
 
-        // Return button to navigate back
         binding.returnBtn.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        // Camera functionality – check permissions and start camera
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
 
-        // Capture button in the camera container triggers image capture
         binding.cameraCaptureButton.setOnClickListener {
             takePhoto()
         }
 
-        // Gallery button
         binding.galleryButton.setOnClickListener {
             Toast.makeText(requireContext(), "Gallery selection not implemented", Toast.LENGTH_SHORT).show()
         }
 
-        // Initialize the camera executor for background operations
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     private fun loadSampleData() {
-        // Clear existing data
         dataList.clear()
-
-        // Add a single DataClass object
         dataList.add(
             DataClass(
                 dataId = 1,
-                dataImage = "R.drawable.samplecard", // Use drawable resource
+                dataImage = "R.drawable.samplecard",
                 dataCardName = "Meowscarada",
                 dataCardSet = "Paldea Evolved",
                 dataCardRarity = "Rare",
                 dataCardCode = "PAL-001"
             )
         )
-
-        // Notify adapter of data change
         adapter.notifyDataSetChanged()
     }
 
@@ -165,6 +158,10 @@ class ImageSearch : Fragment() {
 
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
+
+        // 🔧 Show loading before capture
+        showLoadingDialog()
+
         val photoFile = File(
             getOutputDirectory(),
             SimpleDateFormat(FILENAME_FORMAT, Locale.US)
@@ -176,15 +173,18 @@ class ImageSearch : Fragment() {
             ContextCompat.getMainExecutor(requireContext()),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
+                    // 🔧 Hide loading on error
+                    hideLoadingDialog()
                     Log.e("ImageSearch", "Photo capture failed: ${exc.message}", exc)
                     Toast.makeText(requireContext(), "Photo capture failed", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    // 🔧 Hide loading on success
+                    hideLoadingDialog()
                     val savedPath = photoFile.absolutePath
                     Toast.makeText(requireContext(), "Photo captured: $savedPath", Toast.LENGTH_SHORT).show()
                     Log.d("ImageSearch", "Photo saved at: $savedPath")
-                    // For testing, reload sample data
                     loadSampleData()
                 }
             }
@@ -220,19 +220,23 @@ class ImageSearch : Fragment() {
     private fun hideSystemBars() {
         val window = requireActivity().window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.let {
-                it.hide(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE)
-                it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            // Let the window draw behind system bars so we can hide them.
+            window.setDecorFitsSystemWindows(false)
+            window.insetsController?.let { controller ->
+                // Hide both status and navigation bars.
+                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                // Allow them to be temporarily revealed with a swipe.
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         } else {
             @Suppress("DEPRECATION")
             window.decorView.systemUiVisibility = (
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            or View.SYSTEM_UI_FLAG_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    View.SYSTEM_UI_FLAG_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     )
         }
     }
@@ -240,22 +244,46 @@ class ImageSearch : Fragment() {
     private fun showSystemBars() {
         val window = requireActivity().window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.show(WindowInsetsController.BEHAVIOR_DEFAULT)
+            // Restore the default window drawing behavior.
+            window.setDecorFitsSystemWindows(true)
+            window.insetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
         } else {
             @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = (
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    )
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
         }
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
+        // 🔧 Clean up loading dialog
+        hideLoadingDialog()
         showSystemBars()
         showBottomNavigation()
         cameraExecutor.shutdown()
         _binding = null
+    }
+
+    // 🔧 Utility to show the loading dialog with animated drawable
+    private fun showLoadingDialog() {
+        if (loadingDialog?.isShowing == true) return
+
+        loadingDialog = Dialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.loading_dialog, null)
+        loadingDialog?.setContentView(view)
+        loadingDialog?.setCancelable(false)
+        loadingDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val loadingImage = view.findViewById<ImageView>(R.id.loading_image)
+        val animationDrawable = loadingImage.drawable as? AnimationDrawable
+        animationDrawable?.start()
+
+        loadingDialog?.show()
+    }
+
+    // 🔧 Utility to hide the dialog
+    private fun hideLoadingDialog() {
+        loadingDialog?.dismiss()
+        loadingDialog = null
     }
 }
