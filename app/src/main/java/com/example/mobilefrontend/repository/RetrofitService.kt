@@ -8,6 +8,7 @@ import com.example.mobilefrontend.model.LoginRequest
 import com.example.mobilefrontend.model.SignUpRequest
 import com.example.mobilefrontend.model.User
 import com.example.mobilefrontend.model.UserProfile
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -15,7 +16,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -49,8 +52,14 @@ interface RetrofitService {
     @GET("v1/api/cards/random")
     suspend fun getRandomCards(@Query("series") series: String): Response<ApiResponse<List<Card>>>
 
+    @Multipart
+    @POST("v1/api/cards/search")
+    suspend fun searchCards(
+        @Part image: MultipartBody.Part,
+    ): Response<ApiResponse<List<Card>>>
+
     companion object {
-        private const val BASE_URL = "https://yourrlove.com/"
+        private const val BASE_URL = "http://10.20.2.77:3000/"
 
         @Volatile
         private var instance: RetrofitService? = null

@@ -12,6 +12,10 @@ import com.example.mobilefrontend.repository.toResultFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 class CardViewModel: ViewModel() {
     private val _cardState = MutableStateFlow<ApiResult<List<Card>>?>(null)
@@ -25,6 +29,9 @@ class CardViewModel: ViewModel() {
 
     private val _randomCardsState = MutableStateFlow<ApiResult<List<Card>>?>(null)
     val randomCardsState: StateFlow<ApiResult<List<Card>>?> = _randomCardsState
+
+    private val _cardSearchState = MutableStateFlow<ApiResult<List<Card>>?>(null)
+    val cardSearchState: StateFlow<ApiResult<List<Card>>?> = _cardSearchState
 
         fun getCards(keyword: String? = null, rarity: String? = null) {
             viewModelScope.launch {
@@ -79,4 +86,20 @@ class CardViewModel: ViewModel() {
             Log.d("CardViewModel", "Reset user collection state")
         }
 
+    fun searchCards(imageFile: File) {
+        viewModelScope.launch {
+            val requestFile = imageFile
+                .asRequestBody("image/*".toMediaTypeOrNull())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "image", imageFile.name, requestFile
+            )
+            Log.d("CardViewModel", "Multipart body: $multipartBody")
+            toResultFlow {
+                RetrofitService.get().searchCards(multipartBody)
+            }.collect { result ->
+                _cardState.value = result
+                Log.d("CardViewModel", "Search cards result: $result")
+            }
+        }
+    }
 }

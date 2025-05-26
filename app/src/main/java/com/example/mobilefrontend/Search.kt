@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -33,7 +34,7 @@ class Search : Fragment() {
     private lateinit var adapter: AdapterClass
     private val dataList = ArrayList<DataClass>()
     private val originalDataList = ArrayList<DataClass>()
-    private val cardModel: CardViewModel by viewModel()
+    private val cardModel: CardViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

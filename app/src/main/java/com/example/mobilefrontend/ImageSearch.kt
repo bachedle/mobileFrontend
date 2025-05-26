@@ -18,12 +18,20 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mobilefrontend.databinding.FragmentImageSearchBinding
 import com.example.mobilefrontend.itemCard.AdapterClass
 import com.example.mobilefrontend.itemCard.DataClass
+import com.example.mobilefrontend.repository.ApiResult
+import com.example.mobilefrontend.viewmodels.CardViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -34,6 +42,8 @@ class ImageSearch : Fragment() {
     private var _binding: FragmentImageSearchBinding? = null
     private val binding get() = _binding!!
 
+    private val cardModel: CardViewModel by activityViewModels()
+    // CameraX variables
     private lateinit var adapter: AdapterClass
     private val dataList = ArrayList<DataClass>()
     private lateinit var cameraExecutor: ExecutorService
@@ -96,13 +106,33 @@ class ImageSearch : Fragment() {
             takePhoto()
         }
 
-        // Gallery button
+        // Gallery button (optional, if you want to implement gallery selection)
         binding.galleryButton.setOnClickListener {
             Toast.makeText(requireContext(), "Gallery selection not implemented", Toast.LENGTH_SHORT).show()
         }
 
         // Initialize the camera executor for background operations
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                cardModel.cardState.collect { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            val cards = result.data ?: emptyList()
+                            Log.d("Result Search", "Cards: $cards")
+                        }
+                        is ApiResult.Loading -> {
+                            // Show loading UI (optional)
+                        }
+                        is ApiResult.Error -> {
+                            Log.e("Home", "Error: ${result.message}")
+                        }
+                        null -> {}
+                    }
+                }
+            }
+        }
     }
 
     private fun loadSampleData() {
@@ -130,24 +160,37 @@ class ImageSearch : Fragment() {
         bottomNavigationView?.visibility = View.GONE
     }
 
+    /**
+     * Show the BottomNavigationView
+     */
     private fun showBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView?.visibility = View.VISIBLE
     }
 
+    /**
+     * Start the CameraX preview.
+     */
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
+
+            // Configure the preview use case with a target aspect ratio
             val preview = Preview.Builder()
                 .setTargetAspectRatio(androidx.camera.core.AspectRatio.RATIO_4_3)
                 .build().also {
                     it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                 }
+
+            // Initialize ImageCapture for taking photos
             imageCapture = ImageCapture.Builder()
                 .setTargetAspectRatio(androidx.camera.core.AspectRatio.RATIO_4_3)
                 .build()
+
+            // Select the default back camera
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
@@ -163,13 +206,19 @@ class ImageSearch : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
+    /**
+     * Capture an image with CameraX.
+     */
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
+
+        // Create an output file with a time-stamped name
         val photoFile = File(
             getOutputDirectory(),
             SimpleDateFormat(FILENAME_FORMAT, Locale.US)
                 .format(System.currentTimeMillis()) + ".jpg"
         )
+
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         imageCapture.takePicture(
             outputOptions,
@@ -191,7 +240,23 @@ class ImageSearch : Fragment() {
         )
     }
 
+    /**
+     * Perform an image search using the captured image.
+     */
+    private fun performImageSearch(imagePath: String) {
+        val imageFile = File(imagePath)
+        if (imageFile.exists()) {
+            Log.d("ImageSearch", "Image file path: ${imageFile.absolutePath}")
+
+            cardModel.searchCards(imageFile)  // Call the real image upload method
+        } else {
+            Log.e("ImageSearch", "Image file not found at path: $imagePath")
+        }
+    }
+
+    // Helper: Returns an output directory in the phone's Downloads folder for saved photos
     private fun getOutputDirectory(): File {
+        // This method uses the public Downloads directory. (For Android 10+, consider using MediaStore.)
         val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         if (!downloadsDir.exists()) {
             downloadsDir.mkdirs()
@@ -217,6 +282,9 @@ class ImageSearch : Fragment() {
         }
     }
 
+    /**
+     * Hide the system bars for an immersive experience.
+     */
     private fun hideSystemBars() {
         val window = requireActivity().window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -237,6 +305,9 @@ class ImageSearch : Fragment() {
         }
     }
 
+    /**
+     * Restore the system bars and BottomNavigationView.
+     */
     private fun showSystemBars() {
         val window = requireActivity().window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -253,6 +324,7 @@ class ImageSearch : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Restore the system bars and bottom navigation
         showSystemBars()
         showBottomNavigation()
         cameraExecutor.shutdown()
