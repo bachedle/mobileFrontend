@@ -81,17 +81,20 @@ class ImageSearch : Fragment() {
         binding.rvCardList.layoutManager = LinearLayoutManager(context)
         binding.rvCardList.setHasFixedSize(true)
 
-        adapter = AdapterClass(dataList, isGrid = false) { selectedCard ->
-            val action = SearchDirections.actionSearchToCardDetail(
-                selectedCard.dataId,
-                selectedCard.dataImage,
-                selectedCard.dataCardName,
-                selectedCard.dataCardSet,
-                selectedCard.dataCardRarity,
-                selectedCard.dataCardCode,
-                false
-            )
-            findNavController().navigate(action)
+        adapter = AdapterClass(dataList) { selectedCard ->
+            if(selectedCard != null) {
+                val action = ImageSearchDirections.actionNavImageSearchToLlCardDetailsRoot(
+                    selectedCard.dataId,
+                    selectedCard.dataImage,
+                    selectedCard.dataCardName,
+                    selectedCard.dataCardSet,
+                    selectedCard.dataCardRarity,
+                    selectedCard.dataCardCode,
+                    false
+                )
+                findNavController().navigate(action)
+            }
+
         }
         binding.rvCardList.adapter = adapter
 
@@ -128,10 +131,10 @@ class ImageSearch : Fragment() {
                                 DataClass(
                                     it.id,
                                     it.image_url,
-                                    it.name,
+                                    it.name ?: "UNDEFINED",
                                     "Paldea Evolved", // Replace with actual set name if needed
                                     it.rarity,
-                                    it.code
+                                    it.code ?: "UNDEFINED"
                                 )
                             }
 
@@ -148,12 +151,14 @@ class ImageSearch : Fragment() {
                             } else {
                                 Toast.makeText(context, "No cards found.", Toast.LENGTH_SHORT).show()
                             }
+                            hideLoadingDialog()
                         }
                         is ApiResult.Loading -> {
-                            // Show loading UI (optional)
+
                         }
                         is ApiResult.Error -> {
                             Log.e("Home", "Error: ${result.message}")
+                            hideLoadingDialog()
                         }
                         null -> {}
                     }
@@ -244,7 +249,6 @@ class ImageSearch : Fragment() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     // 🔧 Hide loading on success
-                    hideLoadingDialog()
                     val savedPath = photoFile.absolutePath
                     Toast.makeText(requireContext(), "Photo captured: $savedPath", Toast.LENGTH_SHORT).show()
                     Log.d("ImageSearch", "Photo saved at: $savedPath")
@@ -393,7 +397,6 @@ class ImageSearch : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         // 🔧 Clean up loading dialog
-        hideLoadingDialog()
         showSystemBars()
         showBottomNavigation()
         cameraExecutor.shutdown()

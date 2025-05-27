@@ -97,7 +97,7 @@ class Search : Fragment() {
                             hideLoadingDialog() // 🔧 hide loading
                             val cards = result.data ?: emptyList()
 
-                            val mappedCards = cards.map {
+                            val mappedCards = cards.take(10).map {
                                 DataClass(
                                     it.id,
                                     it.image_url,

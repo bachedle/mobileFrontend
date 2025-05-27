@@ -42,7 +42,7 @@ class User : Fragment() {
         val collectionButton = view.findViewById<TextView>(R.id.btnAddToCollection)
         collectionButton.setOnClickListener {
             userId?.let { id ->
-                val action = UserDirections.actionUsersToCollection(id)
+                val action = UserDirections.actionUsersToCollection(1)
                 findNavController().navigate(action)
             } ?: run {
                 // ID not ready yet – you might show a toast or disable the button until ready

@@ -86,7 +86,7 @@ class CardDetails : Fragment() {
         // Add to Collection
         binding.btnAddToCollection.setOnClickListener {
             if(userId != null) {
-                val payload = AddCardToCollectionRequest(user_id = userId!!, card_id = dataId)
+                val payload = AddCardToCollectionRequest(user_id = 1, card_id = dataId)
                 cardModel.addToCollection(payload)
                 it.isEnabled = false
             }

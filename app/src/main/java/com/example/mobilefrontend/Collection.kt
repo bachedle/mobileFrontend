@@ -66,7 +66,7 @@ class Collection : Fragment() {
         }
 
         observeCardState()
-        cardModel.getUserCollection(userId = userId)
+        cardModel.getUserCollection(userId = 1)
 
         return view
     }

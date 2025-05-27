@@ -71,7 +71,7 @@ class Home : Fragment() {
 
         collectionButton.setOnClickListener {
             //thay id trong action cc gi do
-            findNavController().navigate(HomeDirections.actionHomeToCollection(3))
+            findNavController().navigate(HomeDirections.actionHomeToCollection(1))
         }
 
         observeCardState()

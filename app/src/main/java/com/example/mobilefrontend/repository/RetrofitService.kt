@@ -59,7 +59,7 @@ interface RetrofitService {
     ): Response<ApiResponse<List<Card>>>
 
     companion object {
-        private const val BASE_URL = "http://10.20.2.77:3000/"
+        private const val BASE_URL = "https://yourrlove.com/"
 
         @Volatile
         private var instance: RetrofitService? = null
