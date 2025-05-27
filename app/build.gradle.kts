@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mobilefrontend"
+    namespace = "com.pokellect.mobilefrontend"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.mobilefrontend"
+        applicationId = "com.pokellect.mobilefrontend"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

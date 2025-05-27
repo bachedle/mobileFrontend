@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/Login"
-        android:name="com.example.mobilefrontend.Login"
+        android:name="com.pokellect.mobilefrontend.Login"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/Signup"
-        android:name="com.example.mobilefrontend.Signup"
+        android:name="com.pokellect.mobilefrontend.Signup"
         android:label="Signup"
         tools:layout="@layout/fragment_signup">
         <action
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.mobilefrontend.Home"
+        android:name="com.pokellect.mobilefrontend.Home"
         tools:layout="@layout/fragment_home"
         android:label="HomeFragment">
         <action
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.example.mobilefrontend.Search"
+        android:name="com.pokellect.mobilefrontend.Search"
         tools:layout="@layout/fragment_search"
         android:label="SearchFragment">
         <action
@@ -59,7 +59,7 @@
 
     <fragment
         android:id="@+id/nav_image_search"
-        android:name="com.example.mobilefrontend.ImageSearch"
+        android:name="com.pokellect.mobilefrontend.ImageSearch"
         tools:layout="@layout/fragment_image_search"
         android:label="ImageSearchFragment">
         <action
@@ -69,7 +69,7 @@
 
     <fragment
         android:id="@+id/nav_simulator"
-        android:name="com.example.mobilefrontend.Simulator"
+        android:name="com.pokellect.mobilefrontend.Simulator"
         tools:layout="@layout/fragment_simulator">
         <argument
             android:name="setName"
@@ -81,7 +81,7 @@
 
     <fragment
         android:id="@+id/nav_users"
-        android:name="com.example.mobilefrontend.User"
+        android:name="com.pokellect.mobilefrontend.User"
         tools:layout="@layout/fragment_user">
         <action
             android:id="@+id/action_users_to_collection"
@@ -90,7 +90,7 @@
 
     <fragment
         android:id="@+id/collection"
-        android:name="com.example.mobilefrontend.Collection"
+        android:name="com.pokellect.mobilefrontend.Collection"
         tools:layout="@layout/fragment_collection">
         <action
             android:id="@+id/action_collection_to_card_detail"
@@ -102,7 +102,7 @@
 
     <fragment
         android:id="@+id/llCardDetailsRoot"
-        android:name="com.example.mobilefrontend.CardDetails"
+        android:name="com.pokellect.mobilefrontend.CardDetails"
         tools:layout="@layout/fragment_carddetail"
         android:label="CardDetails">
 
@@ -137,7 +137,7 @@
 
     <fragment
         android:id="@+id/nav_simulator_main"
-        android:name="com.example.mobilefrontend.SimulatorMain"
+        android:name="com.pokellect.mobilefrontend.SimulatorMain"
         android:label="SimulatorMain" >
         <action
             android:id="@+id/action_simulatorMain_to_simulator"
